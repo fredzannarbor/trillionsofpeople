@@ -2,7 +2,7 @@ datetime
 docx
 flask_user
 gibberish
-json
+nltk
 nltk.corpus
 numpy
 openai
