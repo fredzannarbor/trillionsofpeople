@@ -5,7 +5,6 @@ gibberish
 nltk
 numpy
 openai
-os
 pandas
 pprint
 random
