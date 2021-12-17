@@ -3,7 +3,6 @@ docx
 flask_user
 gibberish
 nltk
-nltk.corpus
 numpy
 openai
 os
