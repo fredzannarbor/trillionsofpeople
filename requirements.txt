@@ -11,3 +11,8 @@ sqlalchemy
 streamlit
 stripe
 uuid
+flask_user
+flask_wtf
+wtforms
+flask_uploads
+flask_sqlalchemy
