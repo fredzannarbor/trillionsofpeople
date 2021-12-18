@@ -10,5 +10,4 @@ requests
 sqlalchemy
 streamlit
 stripe
-traceback
 uuid
