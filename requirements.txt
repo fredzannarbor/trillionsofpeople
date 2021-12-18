@@ -17,3 +17,5 @@ wtforms
 flask_uploads
 flask_sqlalchemy
 email_validator
+workzeug
+flask
