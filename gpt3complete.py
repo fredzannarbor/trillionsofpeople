@@ -14,10 +14,10 @@ from traceback import TracebackException
 
 
 stripe_keys = {
-    "secret_key": os.environ["STRIPE_SECRET_KEY"],
-    "publishable_key": os.environ["STRIPE_PUBLISHABLE_KEY"],
-    "price_id": os.environ["STRIPE_PRICE_ID"],
-    "endpoint_secret": os.environ["STRIPE_ENDPOINT_SECRET"],
+    "secret_key": st.secrets["STRIPE_SECRET_KEY"],
+    "publishable_key": st.secrets["STRIPE_PUBLISHABLE_KEY"],
+    "price_id": st.secrets["STRIPE_PRICE_ID"],
+    "endpoint_secret": st.secrets["STRIPE_ENDPOINT_SECRET"],
 }
 
 stripe.api_key = stripe_keys["secret_key"]
@@ -25,7 +25,8 @@ stripe.api_key = stripe_keys["secret_key"]
 import openai
 
 
-openai_user_id_for_safety_tracking = os.environ['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
+openai_user_id_for_safety_tracking = st.secrets['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
+openai_key = st.secrets['OPENAI_KEY']
 
 import pandas as pd
 
@@ -38,7 +39,7 @@ from flask_user import current_user
 from sqlalchemy import func, extract
 from sqlalchemy.dialects import postgresql
 
-from .s2orc.doc2json.pdf2json.process_pdf import process_pdf_file
+#from .s2orc.doc2json.pdf2json.process_pdf import process_pdf_file
 
 import sqlite3
 URI_SQLITE_DB = osenv.get('URI_SQLITE_DB')
@@ -142,7 +143,7 @@ def presets_parser(preset_filename):
 
 def gpt3complete(preset_filename, prompt, username="guest"):
     override_prompt = None
-    openai_user_id_for_safety_tracking = os.environ['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
+    openai_user_id_for_safety_tracking = st.secrets['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
 
     if prompt:
         override_prompt = prompt
