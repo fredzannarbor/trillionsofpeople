@@ -7,7 +7,6 @@ from flask_user import UserMixin
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import MultipleFileField
-from flask_uploads import UploadSet, DOCUMENTS
 from wtforms import StringField, SubmitField, validators, TextAreaField, SelectField, RadioField
 from app import db
 from sqlalchemy.sql import func
@@ -222,14 +221,6 @@ class Transactions(db.Model):
     response = db.Column(db.Text, nullable=True)
     safety_rating = db.Column(db.Integer, nullable=True)
     created_on = db.Column(db.DateTime, default=func.now(), nullable=False)
-
-class UploadForm(FlaskForm):
-    file = FileField()
-    submit = SubmitField('Save')
-
-class MultiUploadForm(FlaskForm):
-    file = MultipleFileField('Upload Sales Data File', validators=[validators.DataRequired('A prompt is required')])
-    submit = SubmitField()
 
 class UserDocs(db.Model):
     __tablename__ = 'userdocs'
