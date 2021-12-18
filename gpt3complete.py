@@ -161,7 +161,7 @@ def gpt3complete(preset_filename, prompt, username="guest"):
     print('promptsubmit is:', promptsubmit)
 
     if openai_user_id_for_safety_tracking is None:
-        openai_user_id_for_safety_tracking = str(current_user.id)
+        openai_user_id_for_safety_tracking = 6
 
     for item in promptsubmit:
         promptchar= len(promptsubmit)
