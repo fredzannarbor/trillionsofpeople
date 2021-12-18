@@ -8,9 +8,10 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import MultipleFileField
 from wtforms import StringField, SubmitField, validators, TextAreaField, SelectField, RadioField
-from app import db
-from sqlalchemy.sql import func
 
+from sqlalchemy.sql import func
+app = Flask(__name__)
+db.init_app(app)
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
 class User(db.Model, UserMixin):
