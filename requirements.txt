@@ -1,5 +1,5 @@
 datetime
-docx
+python-docx
 flask_user
 gibberish
 nltk
