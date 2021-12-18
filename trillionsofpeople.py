@@ -24,6 +24,12 @@ def read_csv(filename):
     countries = pd.read_csv(filename, names =['code', 'country_name'],  index_col=0, squeeze=True).to_dict()
     return countries
 
+def browse_people(filename):
+    with open(filename, 'r') as f:
+        reader = csv.reader(f)
+        people = list(reader)
+    return people
+
 def create_shortname(species):
     if species == 'sapiens':
         shortname = gib.generate_word()
@@ -116,6 +122,10 @@ This has very practical implications. For example, one of the major difficulties
 
 This is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques.  Using our friendly no-code UI you can create a synthetic population of real-seeming people, in small numbers or large, and save, share, and register your synthetic people.  You can even use the same techniques to explore the lives of authenticated historical people!
 """)
+
+with st.form('Browse people'):
+    people = browse_people('people.csv')
+    st.write(people)
 
 with st.form("my_form"):
 
