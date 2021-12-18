@@ -16,3 +16,4 @@ flask_wtf
 wtforms
 flask_uploads
 flask_sqlalchemy
+email_validator
