@@ -1,7 +1,7 @@
 # Copyright 2014 SolidBuilds.com. All rights reserved
 #
 # Authors: Ling Thio <ling.thio@gmail.com>
-
+from flask import Flask, redirect, render_template, request, url_for
 from flask_user import UserMixin
 # from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
