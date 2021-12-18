@@ -6,9 +6,7 @@ nltk
 numpy
 openai
 pandas
-pprint
-random
-re
+
 requests
 s2orc
 sqlalchemy
