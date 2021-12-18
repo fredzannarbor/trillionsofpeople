@@ -18,3 +18,4 @@ flask_uploads
 flask_sqlalchemy
 email_validator
 flask
+datasets
