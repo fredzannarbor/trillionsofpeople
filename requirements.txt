@@ -6,9 +6,7 @@ nltk
 numpy
 openai
 pandas
-
 requests
-s2orc
 sqlalchemy
 streamlit
 stripe
