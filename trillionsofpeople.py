@@ -15,7 +15,7 @@ gib = Gibberish()
 
 import csv
 
-@st.cache(hash_funcs={_thread.RLock: my_hash_func})
+@st.experimental_memo
 def cacheaware_gpt3complete(preset, prompt, username="guest"):
     response = gpt3complete('CreatePersonBackstory', prompt, username="guest")
     return response
