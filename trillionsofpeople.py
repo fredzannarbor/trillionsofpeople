@@ -15,6 +15,10 @@ gib = Gibberish()
 
 import csv
 
+@st.cache
+def cacheaware_gpt3complete(preset, prompt, username="guest"):
+    response = gpt3complete('CreatePersonBackstory', prompt, username="guest")
+    return response
 
 def read_csv(filename):
     countries = pd.read_csv(filename, names =['code', 'country_name'],  index_col=0, squeeze=True).to_dict()
@@ -163,7 +167,7 @@ for i in range(j):
     if year > 0:
         prompt = shortname + ' will be born in the area now known as ' + country + '.'
 
-    response = gpt3complete('CreatePersonBackstory', prompt, username="guest")
+    response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username='guest')
     openai_response= response[0]
     backstory = openai_response['choices'][0]['text']
     values = [shortname, year_of_birth_in_CE, species, timeline, latitude, longitude, nearest_city, backstory, thisperson4name]#, OCEAN_tuple]
