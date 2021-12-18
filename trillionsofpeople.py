@@ -99,7 +99,7 @@ def random_spot(country):
         longitude = 'Unknown'
     return latitude, longitude, nearest_city
 
-filename = 'streamlit-cloud-deploy/country.csv'
+filename = 'country.csv'
 
 countries = read_csv(filename)
 

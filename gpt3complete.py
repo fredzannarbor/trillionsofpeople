@@ -32,8 +32,6 @@ import pandas as pd
 
 import docx
 
-
-
 from flask_user import current_user
 
 from sqlalchemy import func, extract
