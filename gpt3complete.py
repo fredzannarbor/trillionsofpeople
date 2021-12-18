@@ -32,7 +32,7 @@ import pandas as pd
 
 import docx
 
-from app.models.user_models import User, StripeCustomer, Role, UsersRoles, UserPromptForm, UserDocsForm, Presets, Tokens, Transactions, UploadForm, UserDocs, find_or_create_searchdocs, Journals
+
 
 from flask_user import current_user
 
