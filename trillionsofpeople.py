@@ -127,6 +127,8 @@ st.subheader("Browse People")
 people = browse_people('people.csv')
 st.table(people)
 
+st.subheader("Create People")
+
 with st.form("my_form"):
 
 
