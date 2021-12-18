@@ -1,6 +1,7 @@
 # Copyright 2014 SolidBuilds.com. All rights reserved
 #
 # Authors: Ling Thio <ling.thio@gmail.com>
+import flask
 from flask import Flask, redirect, render_template, request, url_for
 from flask_user import UserMixin
 # from flask_user.forms import RegisterForm
@@ -10,7 +11,8 @@ from wtforms import MultipleFileField
 from wtforms import StringField, SubmitField, validators, TextAreaField, SelectField, RadioField
 
 from sqlalchemy.sql import func
-app = Flask(__name__)
+app = Flask(name)
+
 db.init_app(app)
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
