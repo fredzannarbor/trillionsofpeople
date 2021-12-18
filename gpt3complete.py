@@ -26,7 +26,7 @@ import openai
 
 
 openai_user_id_for_safety_tracking = st.secrets['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
-openai_key = st.secrets['OPENAI_KEY']
+openai.api_key = st.secrets['OPENAI_KEY']
 
 import pandas as pd
 
