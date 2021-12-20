@@ -154,7 +154,8 @@ This is a tool to make those lives feel more real, using state-of-the-art scient
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
-st.table(people)
+browsepeopledf = pd.DataFrame(people)
+st.dataframe(browsepeopledf.head(5))
 
 st.subheader("Create People")
 
