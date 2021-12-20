@@ -181,7 +181,7 @@ with st.form("my_form"):
     indexcountry = random.randrange(0, len(countries))
     country = st.selectbox('Pick a location that corresponds to a modern country.', options=countries.keys(), help ='Unknown locations are retrieved occasionally during peak loS.')
 
-    j = st.number_input('How many people do you want to generate? [For batch jobs, contact Fred Zimmerman.]', value=1, min_value=1, max_value=5, step=1, help='Processing time is linear with the number of people generated.')
+    j = int(st.number_input('How many people do you want to generate? [For batch jobs, contact Fred Zimmerman.]', value=1, min_value=1, max_value=5, step=1, help='Processing time is linear with the number of people generated.'))
    
     # Every form must have a submit button.
     submitted = st.form_submit_button("Submit")
