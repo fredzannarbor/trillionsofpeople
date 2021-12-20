@@ -154,6 +154,7 @@ This is a tool to make those lives feel more real, using state-of-the-art scient
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
+peopledf = pd.DataFrame(people)
 browsepeopledf = pd.DataFrame(people)
 st.dataframe(browsepeopledf.head(5))
 
@@ -220,8 +221,12 @@ for i in range(j):
 
 pd.set_option('display.max_colwidth', 70)  
 peopledf = peopledf.append(peopledata)
-backupfilepath = datadir + '/' + 'backup.csv'
-peopledf.to_csv(backupfilepath, mode='a', header=False)
+
+if st.secrets['environment'] == 'cloud':
+    pass
+else:
+    backupfilepath = datadir + '/' + 'backup.csv'
+    peopledf.to_csv(backupfilepath, mode='a', header=False)
 
 if submitted:
     st.info(infomessage)
