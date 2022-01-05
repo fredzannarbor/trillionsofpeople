@@ -172,11 +172,15 @@ _Submit, authenticate, enhance, claim, and share stories about your fellow souls
 
 _A tool to explore the human story._
 
-The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. Sadly, the details of most of those lives are lost in the shadows of past and future. By way of context, the WikiBio dataset derived from Wikipedia's "biographical persons" category has about 784,000 records; but only 200 of those are deemed "core biographies" by the WikiBio team and given top-tier treatment.  
+## About
 
-This focus on a small percentage of all lives has very practical implications. Our understanding of lives in the past is mostly limited to those few for whom we have written records or concrete artifacts. Many millennia are shrouded in near-total mystery.  Similarly,  one of the major difficulties in implementing far-sighted energy and climate policies is that, regrettably, to some extent, future people are abstractions.
+The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. The numbers become even larger when you add mythic and fictional characters, who have been born and died thousands of times, and have some of the most interesting stories.
 
-**TOP** is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. Using our friendly no-code UI you can explore the lives of real-seeming people, past, present, or future, in small numbers or large, and in a way that connects with your own personal story.
+Sadly, the details of most of those lives are lost in the shadows of past and future. Many millenia of human history are shrouded in near-complete mystery.  (Graeber 2021). WikiBio dataset derived from Wikipedia's "biographical persons" category has about 784,000 records; but only 200 of those are deemed "core biographies" by the WikiBio team and given top-tier treatment. (WikiBio 2021)  
+
+This focus on a small percentage of all lives has important practical implications. Our understanding of lives in the past is mostly limited to those few persons for whom we have written records or concrete artifacts; most are mysteries--names, skeletons, or less. Similarly, one of the major difficulties in implementing far-sighted energy and climate policies is that future people are abstractions. 
+
+**TOP** is a tool to make both past and future s feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
 """)
 st.sidebar.markdown(""" ## Options
 
@@ -188,15 +192,12 @@ st.sidebar.markdown(""" ## Options
 
 st.sidebar.markdown("""## Partners
 
-This project, to succeed, must involve many people from all disciplines and walks of life, and must become a funded, growing enterprise. So if you are intrigued by what you see here: I need data providers, beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, and investors! Please contact me at [wfzimmerman@gmail.com](mailto:wfzimmerman@gmail.com.) 
+This project, to achieve its vision, must involve many people from all disciplines and walks of life.  It must also grow as rapidly as possible to take on a life of its own as an independent organization.  For that, we will need data providers, beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, and investors! Please contact me at [wfzimmerman@gmail.com](mailto:wfzimmerman@gmail.com.) 
 
 --Fred Zimmerman, Founder""")
 
-st.subheader("Browse People")
-people = browse_people(datadir + '/' + 'people.csv')
-peopledf = pd.DataFrame(people)
-browsepeopledf = pd.DataFrame(people)
-st.dataframe(browsepeopledf.head(5))
+st.subheader('Explore Scenarios')
+
 
 st.subheader("Create People")
 
@@ -275,5 +276,18 @@ if submitted:
     show_created_people = peopledf.drop(axis=1, columns=['gender', 'invisible_comments'])
     st.dataframe(show_created_people.head(5))
 
+st.subheader("Browse People")
+people = browse_people(datadir + '/' + 'people.csv')
+peopledf = pd.DataFrame(people)
+browsepeopledf = pd.DataFrame(people)
+st.dataframe(browsepeopledf.head(5))
+
+
 st.subheader("Load People")
 st.markdown("""To load real, fictitious, or hypothetical people, please contact Fred Zimmerman.  Upload options coming.""")
+
+st.subheader("Methods")
+
+st.markdown(""" The guiding principle of "one row per person" implies that the number of columns must be kept manageably low. There may be a time where a great profusion of data tables and models is needed to capture vast amounts of data about each individual and their relations to one another and to the physical and social worlds, but the initial goal is to be as parsimonious  as possible. """)
+
+st.subheader("References")
