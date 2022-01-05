@@ -266,7 +266,8 @@ else:
 
 if submitted:
     st.info(infomessage)
-    st.dataframe(peopledf.head(5))
+    show_created_people = peopledf.drop(['gender', 'invisible_comments'])
+    st.dataframe(show_created_people.head(5))
 
 st.subheader("Load People")
 st.markdown("""To load real, fictitious, or hypothetical people, please contact Fred Zimmerman.  Upload options coming.""")
