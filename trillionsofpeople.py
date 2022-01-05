@@ -159,7 +159,7 @@ st.sidebar.header('Trillions of People')
 st.sidebar.subheader('A tool to explore the human story.')
 st.sidebar.markdown("""## Partners
 
-This concept and initial implementation is mine alone, but by definition, this project, to grow, must involve many people from all disciplines and walks of life, and must become a funded growth company, an organization, or an element of an enterprise. I need data, demographers, futurists, coders, designers sponsors, and investors. If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.] 
+This concept and initial implementation is mine alone, but by definition, this project, to grow, must involve many people from all disciplines and walks of life, and must become a funded growth company, an organization, or an element of an enterprise. I need data, demographers, futurists, coders, designers sponsors, and investors. If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.] """)
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
