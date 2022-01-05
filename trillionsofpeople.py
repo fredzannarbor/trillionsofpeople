@@ -1,4 +1,5 @@
 import streamlit as st
+import glob
 
 if st.secrets['environment'] == 'cloud':
     print('running on Streamlit Cloud with modified secrets and no quota tracking')
@@ -34,6 +35,28 @@ def cacheaware_gpt3complete(preset, prompt, username="guest"):
 def read_csv(filename):
     countries = pd.read_csv(filename, names =['code', 'country_name'],  index_col=0, squeeze=True).to_dict()
     return countries
+
+def load_people():
+    all_people_data = pd.DataFrame()
+    csvtarget = 'trillions-deploy/people_data/' +  '*.csv'
+    for i in glob.glob(csvtarget):
+        print("reading file ", i)
+        i_df = pd.read_csv(i, index_col=0, squeeze=True)
+        all_people_data = all_people_data.append(i_df)
+    return all_people_data
+
+
+def import_data(dfname):
+    df = pd.read_csv(dfname, index_col=0, squeeze=True)
+    # fill missing fourwordsname with fourwordsnames
+    df['fourwordsname'] = df['fourwordsname'].fillna(df['fourwordsname'].apply(fourwordsname))
+    # fill missing species with species
+    df['species'] = df['species'].fillna(df['species'].apply(random.choice(['sapiens', 'neanderthalensis', 'denisovan', 'floresiensis']) ))
+    # fill missing OCEANtuple with OCEANtuple
+    df['OCEANtuple'] = df['OCEANtuple'].fillna(df['OCEANtuple'].apply(OCEANtuple(species)))
+    # fill remaining nas with NaN
+    df = df.fillna(value=np.nan)
+    return df
 
 def browse_people(filename):
     with open(filename, 'r') as f:
@@ -81,7 +104,7 @@ def fourwordsname():
     fourwordsname = adjective + '-' + noun + '-' + verb + '-' + adverb
     return fourwordsname
 
-def OCEANtuple():
+def OCEANtuple(species):
     openness = random.random()
     conscientiousness = random.random()
     extraversion = random.random()
@@ -151,15 +174,17 @@ _A tool to explore the human story._
 
 The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. Sadly, the details of most of those lives are lost in the shadows of past and future. By way of context, the WikiBio dataset derived from Wikipedia's "biographical persons" category has about 784,000 records; but only 200 of those are deemed "core biographies" by the WikiBio team and given top-tier treatment.  
 
-This focus on a small percentage of all lives has very practical implications. Our understanding of lives in the past is mostly limited to those few for whom we have written records or concrete artifacts. Many millennia are shrouded in near-total mystery.  Simoilarly,  one of the major difficulties in implementing far-sighted energy and climate policies is that, regrettably, to some extent, future people are abstractions.
+This focus on a small percentage of all lives has very practical implications. Our understanding of lives in the past is mostly limited to those few for whom we have written records or concrete artifacts. Many millennia are shrouded in near-total mystery.  Similarly,  one of the major difficulties in implementing far-sighted energy and climate policies is that, regrettably, to some extent, future people are abstractions.
 
-**TOP** is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. Using our friendly no-code UI you can explore the lives of real-seeming people, past, present, or future people, in small numbers or large, and in a way that connects with your own personal story.
+**TOP** is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. Using our friendly no-code UI you can explore the lives of real-seeming people, past, present, or future, in small numbers or large, and in a way that connects with your own personal story.
 """)
 
 
 st.sidebar.markdown("""## Partners
 
-By definition, this project, to succeed, must involve many people from all disciplines and walks of life, and must become a funded, growing enterprise. So I need users, data, demographers, futurists, coders, designers, sponsors, and investors! If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.) --Fred Zimmerman, Founder""")
+This project, to succeed, must involve many people from all disciplines and walks of life, and must become a funded, growing enterprise. So if you are intrigued by what you see here: I need beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, investors, and data! If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.) 
+
+--Fred Zimmerman, Founder""")
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
@@ -199,7 +224,7 @@ with st.form("my_form"):
         latitude, longitude, nearest_city = random_spot(countries[country])
 
 
-peopledf_columns = ['name', 'born', 'species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'backstory', 'fourwordsname']#  'OCEANtuple'])
+peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
 
 peopledf = pd.DataFrame(columns=peopledf_columns)
 peopledata =[]
