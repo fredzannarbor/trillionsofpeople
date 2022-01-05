@@ -231,6 +231,7 @@ peopledata =[]
 
 for i in range(j):
     species =  'sapiens'
+    gender = random.choice(['male', 'female'])
     shortname = create_shortname(species)
     year_of_birth_in_CE = target_year
     thisperson4name = fourwordsname()
@@ -247,7 +248,7 @@ for i in range(j):
     response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username='guest')
     openai_response= response[0]
     backstory = openai_response['choices'][0]['text']
-    values = [shortname, year_of_birth_in_CE, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name]#, OCEAN_tuple]
+    values = [shortname, gender, year_of_birth_in_CE, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name]#, OCEAN_tuple]
     zipped = zip(peopledf_columns, values)
     people_dict = dict(zipped)
     peopledata.append(people_dict)
