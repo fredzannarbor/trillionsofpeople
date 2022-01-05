@@ -266,7 +266,7 @@ else:
 
 if submitted:
     st.info(infomessage)
-    show_created_people = peopledf.drop(['gender', 'invisible_comments'])
+    show_created_people = peopledf.drop(axis=1, columns=['gender', 'invisible_comments'])
     st.dataframe(show_created_people.head(5))
 
 st.subheader("Load People")
