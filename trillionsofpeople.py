@@ -96,7 +96,7 @@ def get_species_info(species_name):
     return species_info
 
 def get_timeline_info(timeline):
-    timelines = ['ours', 'RCP 8.5', 'Earth-616', 'Earth-1218']
+    timelines = ['ours', 'RCP 8.5', 'Earth-616', 'Earth-1218', 'ODNI2040']
     # timelinfo_dict
     return timeline_info
 
@@ -143,14 +143,23 @@ filename = datadir + '/' + 'country.csv'
 countries = read_csv(filename)
 
 st.title('TrillionsofPeople.info')
-st.markdown("""_Generate synthetic people for a given location and time._
+st.markdown("""One row for every person who ever lived, might have lived, or may live someday._
 
-The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. Sadly the details of most of those lives are lost in the shadows of past and future.  
+_Submit, authenticate, enhance, claim, and share stories about your fellow souls._
 
-This has very practical implications. For example, one of the major difficulties in dealing with climate change policy is that future people seem like abstractions.  Similarly, our understanding of lives in the past is mostly limited to those few for whom we have written records or concrete artifacts.
+The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. Sadly the details of most of those lives are lost in the shadows of past and future. By way of context, the WikiBio dataset derived from Wikipedia's "biographical persons" category has about 784,000 records; but only 200 of those are deemed "core biographies" by the WikiBio team and given top notch treatment.  
 
-This is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques.  Using our friendly no-code UI you can create a synthetic population of real-seeming people, in small numbers or large, and save, share, and register your synthetic people.  You can even use the same techniques to explore the lives of authenticated historical people!
+This focus on a small percentage of all lives has very practical implications. For example, one of the major difficulties in dealing with climate change policy is that to some extent, future people are abstractions.  Similarly, our understanding of lives in the past is mostly limited to those few for whom we have written records or concrete artifacts. 
+
+This is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques.  Using our friendly no-code UI you can explore the lives of real-seeming people, past, present, or future people, in small numbers or large, and in a way that connects with your own personal story.
 """)
+
+st.sidebar.title('About')
+st.sidebar.header('Trillions of People')
+st.sidebar.subheader('A tool to explore the human story.')
+st.sidebar.markdown("""## Partners
+
+This concept and initial implementation is mine alone, but by definition, this project, to grow, must involve many people from all disciplines and walks of life, and must become a funded growth company, an organization, or an element of an enterprise. I need data, demographers, futurists, coders, designers sponsors, and investors. If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.] 
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
