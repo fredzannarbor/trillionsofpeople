@@ -244,11 +244,12 @@ for i in range(j):
         prompt = shortname + ' was born in the area now known as ' + country + '.'
     if year > 0:
         prompt = shortname + ' will be born in the area now known as ' + country + '.'
+    source = 'TOP.info'
 
     response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username='guest')
     openai_response= response[0]
     backstory = openai_response['choices'][0]['text']
-    values = [shortname, gender, year_of_birth_in_CE, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name]#, OCEAN_tuple]
+    values = [shortname,year_of_birth_in_CE,  gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
     zipped = zip(peopledf_columns, values)
     people_dict = dict(zipped)
     peopledata.append(people_dict)
