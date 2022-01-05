@@ -4,7 +4,7 @@ import glob
 if st.secrets['environment'] == 'cloud':
     print('running on Streamlit Cloud with modified secrets and no quota tracking')
     from gpt3complete import gpt3complete, presets_parser, post_process_text
-    datadir = '.'
+    datadir = 'people_data/'
 else:
     print('running on Fredz local or self-hosted with original secrets and no quota tracking')
     from app.utilities.gpt3complete import gpt3complete, presets_parser, post_process_text
