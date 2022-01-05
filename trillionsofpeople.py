@@ -1,5 +1,6 @@
 import streamlit as st
 import glob
+import json
 
 if st.secrets['environment'] == 'cloud':
     print('running on Streamlit Cloud with modified secrets and no quota tracking')
@@ -294,4 +295,7 @@ st.markdown(""" The guiding principle of "one row per person" implies that the n
 
 st.subheader("References")
 
-st.write("trillionsofpeople.info.json")
+# open file with references
+with open('trillionsofpeople.info.json', 'r') as f:
+    data = json.load(f)
+st.write(data)
