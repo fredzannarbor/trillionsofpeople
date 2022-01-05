@@ -178,11 +178,17 @@ This focus on a small percentage of all lives has very practical implications. O
 
 **TOP** is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. Using our friendly no-code UI you can explore the lives of real-seeming people, past, present, or future, in small numbers or large, and in a way that connects with your own personal story.
 """)
+st.sidebar.markdown(""" ## Options
+
+- Explore Scenarios
+- [Create People](#create-people)
+- [Browse People](#browse-people)
+- Submit Data""")
 
 
 st.sidebar.markdown("""## Partners
 
-This project, to succeed, must involve many people from all disciplines and walks of life, and must become a funded, growing enterprise. So if you are intrigued by what you see here: I need beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, investors, and data! If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.) 
+This project, to succeed, must involve many people from all disciplines and walks of life, and must become a funded, growing enterprise. So if you are intrigued by what you see here: I need data providers, beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, and investors! Please contact me at [wfzimmerman@gmail.com](mailto:wfzimmerman@gmail.com.) 
 
 --Fred Zimmerman, Founder""")
 
