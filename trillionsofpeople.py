@@ -296,6 +296,5 @@ st.markdown(""" The guiding principle of "one row per person" implies that the n
 st.subheader("References")
 
 # open file with references
-with open('trillionsofpeople.info.json', 'r') as f:
-    data = json.load(f)
-st.write(data)
+with open('trillionsofpeople.info.txt', 'r') as f:
+    st.markdown(f.read())
