@@ -156,12 +156,10 @@ This focus on a small percentage of all lives has very practical implications. O
 **TOP** is a tool to make those lives feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. Using our friendly no-code UI you can explore the lives of real-seeming people, past, present, or future people, in small numbers or large, and in a way that connects with your own personal story.
 """)
 
-st.sidebar.markdown("""## About""")
 
-st.sidebar.markdown("""Fred Zimmerman, Founder""")
 st.sidebar.markdown("""## Partners
 
-By definition, this project, to grow, must involve many people from all disciplines and walks of life, and must become a funded growth company, an organization, or an element of an enterprise. I need data, demographers, futurists, coders, designers sponsors, and investors. If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.) """)
+By definition, this project, to succeed, must involve many people from all disciplines and walks of life, and must become a funded, growing enterprise. So I need users, data, demographers, futurists, coders, designers, sponsors, and investors! If you are interested in contributing to this project, in any way, please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info.) --Fred Zimmerman, Founder""")
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
