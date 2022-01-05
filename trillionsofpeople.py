@@ -182,12 +182,14 @@ This focus on a small percentage of all lives has important practical implicatio
 
 **TOP** is a tool to make both past and future s feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
 """)
-st.sidebar.markdown(""" ## Options
+st.sidebar.markdown(""" ## Navigation
 
 - Explore Scenarios
 - [Create People](#create-people)
 - [Browse People](#browse-people)
-- Submit Data""")
+- Submit Data
+- [Methods](#methods)
+- [References](#references)""")
 
 
 st.sidebar.markdown("""## Partners
@@ -291,3 +293,5 @@ st.subheader("Methods")
 st.markdown(""" The guiding principle of "one row per person" implies that the number of columns must be kept manageably low. There may be a time where a great profusion of data tables and models is needed to capture vast amounts of data about each individual and their relations to one another and to the physical and social worlds, but the initial goal is to be as parsimonious  as possible. """)
 
 st.subheader("References")
+
+st.json("trillionsofpeople.info.json")
