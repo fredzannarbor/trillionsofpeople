@@ -18,7 +18,7 @@ st.set_page_config(layout="wide")
 import pandas as pd
 import datetime
 from datetime import date
-from gpt3complete import gpt3complete, presets_parser, post_process_text, construct_preset_dict_for_UI_object
+from gpt3_reduced_fx import gpt3complete, presets_parser, post_process_text, construct_preset_dict_for_UI_object
 from nltk.corpus import wordnet as wn
 import random
 
