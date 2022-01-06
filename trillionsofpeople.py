@@ -1,6 +1,6 @@
 import streamlit as st
 import glob
-import json
+import os
 
 if st.secrets['environment'] == 'cloud':
     print('running on Streamlit Cloud with modified secrets and no quota tracking')
@@ -8,7 +8,7 @@ if st.secrets['environment'] == 'cloud':
     datadir = 'people_data/'
 else:
     print('running on Fredz local or self-hosted with original secrets and no quota tracking')
-    from app.utilities.gpt3complete import gpt3complete, presets_parser, post_process_text
+    from app.utilities.gpt3complete import gpt3complete, presets_parser, post_process_text, construct_preset_dict_for_UI_object
     datadir = 'app/data/trillions'
 
 import gibberish
@@ -162,6 +162,20 @@ def migration_to(latitude, longitude, nearest_city):
     current_location = latitude + to_latitude_offset, longitude + to_longitude_offset, nearest_city + to_nearest_city_offset
     return current_location
 
+def create_scenario_personas(scenario, n):
+    values = []
+    species =  'sapiens'
+    gender = random.choice(['male', 'female'])
+    shortname = create_shortname(species)
+    year_of_birth_in_CE = target_year
+    thisperson4name = fourwordsname()
+    timeline = 'ours'
+    realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
+    #OCEAN_tuple =  'test' # OCEANtuple()
+    backstory  = gpt3complete(scenario_selected, None,'trillions')[0]['choices'][0]['text']
+    values = shortname, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source#, OCEAN_tuple]
+    return values
+
 filename = datadir + '/' + 'country.csv'
 
 countries = read_csv(filename)
@@ -200,6 +214,30 @@ This project, to achieve its vision, must involve many people from all disciplin
 --Fred Zimmerman, Founder""")
 
 st.subheader('Explore Scenarios')
+
+st.markdown(""" You can choose from a variety of scenarios to explore, or submit your own.  The scenario provides guidance to the Create People method and provides additional detail to their biography.""")
+
+with st.form("Scenario", key='scenario'):
+    scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdea']
+#['2040', 'RCP85', 'CryptoApotheosis', 'UnsafeAI']
+    scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
+    scenario_selected = st.selectbox('Choose a scenario', scenario_list
+    format_func = lambda x: preset_dict.get(x), help="Select a scenario to explore.") 
+
+    selected_presetdf = presets_parser(scenario_selected)[0]
+    st.write(selected_presetdf)
+    submitted = st.form_submit_button('Create Metadata')
+    if submitted:
+        st.info('Creating personas for scenario', selected_presetdf['preset name'].iloc[0])
+        create_scenario_personas(selected_presetdf, n)
+        if scenario_selected:
+            scenario_row_values = create_scenario_personas(scenario_selected, 1)
+        else:
+            st.write("Please select a scenario.")
+    if scenario_row_values:
+        personas_df = pd.DataFrame(scenario_row_values)
+        show_personas = personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
+    st.dataframe(show_personas.head(5))
 
 
 st.subheader("Create People")
