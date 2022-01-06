@@ -219,8 +219,9 @@ st.markdown(""" You can choose from a variety of scenarios to explore, or submit
 
 with st.form("Scenario Explorer"):
     scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdea']
-#['2040', 'RCP85', 'CryptoApotheosis', 'UnsafeAI']
-    scenario_dict = gpt3complete.construct_preset_dict_for_UI_object(scenario_list)
+    scenario_dict ={}
+    if scenario_list:
+        scenario_dict = gpt3complete.construct_preset_dict_for_UI_object(scenario_list)
     scenario_selected = st.selectbox('Choose a scenario', scenario_list, index=0, format_func = lambda x: scenario_dict.get(x))
 
     selected_presetdf = presets_parser(scenario_selected)[0]
