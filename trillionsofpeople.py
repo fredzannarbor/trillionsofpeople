@@ -18,7 +18,7 @@ st.set_page_config(layout="wide")
 import pandas as pd
 import datetime
 from datetime import date
-from gpt3complete import gpt3complete, presets_parser, post_process_text
+from gpt3complete import gpt3complete, presets_parser, post_process_text, construct_preset_dict_for_UI_object
 from nltk.corpus import wordnet as wn
 import random
 
@@ -172,6 +172,7 @@ def create_scenario_personas(scenario, n):
     timeline = 'ours'
     realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
     #OCEAN_tuple =  'test' # OCEANtuple()
+    backstory = ""
     backstory  = gpt3complete(scenario_selected, None,'trillions')[0]['choices'][0]['text']
     values = shortname, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source#, OCEAN_tuple]
     return values
@@ -221,7 +222,7 @@ with st.form("Scenario Explorer"):
     scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdea']
     scenario_dict ={}
     if scenario_list:
-        scenario_dict = gpt3complete.construct_preset_dict_for_UI_object(scenario_list)
+        scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
     scenario_selected = st.selectbox('Choose a scenario', scenario_list, index=0, format_func = lambda x: scenario_dict.get(x))
 
     selected_presetdf = presets_parser(scenario_selected)[0]
