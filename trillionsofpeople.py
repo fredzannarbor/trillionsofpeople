@@ -300,7 +300,7 @@ for i in range(j):
         prompt = shortname + ' will be born in the area now known as ' + country + '.'
     source = 'TOP.info'
     username = 'trillions'
-    response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username=)
+    response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username)
     openai_response= response[0]
     backstory = openai_response['choices'][0]['text']
     values = [shortname,year_of_birth_in_CE,  gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
