@@ -142,11 +142,13 @@ def construct_preset_dict_for_UI_object(list_of_presets):
     preset_dir = "app/presets/"
     dict_of_presets_for_UI_object = {}
     for preset in list_of_presets:
+        print(preset)
         this_preset_file = preset_dir + preset + ".json"
         list_for_object = []
         with open(this_preset_file, 'rb') as f:
             this_preset = json.load(f)
-            row = [preset, this_preset['preset_name'][0]]
+            print(this_preset)
+            row = [preset, this_preset]
             list_for_object.append(row)
         dict_of_presets_for_UI_object = dict(list_for_object)
 
