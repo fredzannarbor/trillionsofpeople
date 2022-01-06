@@ -9,15 +9,16 @@ import os
 import uuid
 import re
 from os import environ as osenv
+import glob
 
 from traceback import TracebackException
 
 
 stripe_keys = {
-    "secret_key": st.secrets["STRIPE_SECRET_KEY"],
-    "publishable_key": st.secrets["STRIPE_PUBLISHABLE_KEY"],
-    "price_id": st.secrets["STRIPE_PRICE_ID"],
-    "endpoint_secret": st.secrets["STRIPE_ENDPOINT_SECRET"],
+    "secret_key": os.environ["STRIPE_SECRET_KEY"],
+    "publishable_key": os.environ["STRIPE_PUBLISHABLE_KEY"],
+    "price_id": os.environ["STRIPE_PRICE_ID"],
+    "endpoint_secret": os.environ["STRIPE_ENDPOINT_SECRET"],
 }
 
 stripe.api_key = stripe_keys["secret_key"]
@@ -25,19 +26,20 @@ stripe.api_key = stripe_keys["secret_key"]
 import openai
 
 
-openai_user_id_for_safety_tracking = st.secrets['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
-openai.api_key = st.secrets['OPENAI_KEY']
+openai_user_id_for_safety_tracking = os.environ['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
 
 import pandas as pd
 
 import docx
+
+from app.models.user_models import User, StripeCustomer, Role, UsersRoles, UserPromptForm, UserDocsForm, Presets, Tokens, Transactions, UploadForm, UserDocs, find_or_create_searchdocs, Journals
 
 from flask_user import current_user
 
 from sqlalchemy import func, extract
 from sqlalchemy.dialects import postgresql
 
-#from .s2orc.doc2json.pdf2json.process_pdf import process_pdf_file
+from .s2orc.doc2json.pdf2json.process_pdf import process_pdf_file
 
 import sqlite3
 URI_SQLITE_DB = osenv.get('URI_SQLITE_DB')
@@ -138,10 +140,23 @@ def presets_parser(preset_filename):
 
     return presetsdf, preset_name, preset_description, preset_instructions, preset_additional_notes, preset_placeholder, pre_user_input, post_user_input, prompt, engine, finetune_model, temperature, max_tokens, top_p, fp, pp, stop_sequence, echo_on, preset_pagetype, preset_db, user, organization
 
+def construct_preset_dict_for_UI_object(list_of_presets):
+    preset_dir = "app/presets/"
+    dict_of_presets_for_UI_object = {}
+    for preset in list_of_presets:
+        this_preset_file = preset_dir + preset + ".json"
+        list_for_object = []
+        with open(this_preset_file, 'rb') as f:
+            this_preset = json.load(f)
+            row = [preset, this_preset['preset_name']]
+            list_for_object.append(row)
+        dict_of_presets_for_UI_object = dict(list_for_object)
+
+    return dict_of_presets_for_UI_object
 
 def gpt3complete(preset_filename, prompt, username="guest"):
     override_prompt = None
-    openai_user_id_for_safety_tracking = st.secrets['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
+    openai_user_id_for_safety_tracking = os.environ['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
 
     if prompt:
         override_prompt = prompt
@@ -161,7 +176,7 @@ def gpt3complete(preset_filename, prompt, username="guest"):
     print('promptsubmit is:', promptsubmit)
 
     if openai_user_id_for_safety_tracking is None:
-        openai_user_id_for_safety_tracking = 6
+        openai_user_id_for_safety_tracking = str(current_user.id)
 
     for item in promptsubmit:
         promptchar= len(promptsubmit)
@@ -181,24 +196,24 @@ def gpt3complete(preset_filename, prompt, username="guest"):
         response_text = "#### " + presetsdf['completion_heading'][0] + '\n'
         response_text = response_text + response['choices'][0]['text']
 
-        # totaltokens = sum(len(i.split()) for i in response['choices'][0]['logprobs']['tokens'])
-        # print('totaltokens', totaltokens)
-        # created_on = datetime.utcnow()
+        totaltokens = sum(len(i.split()) for i in response['choices'][0]['logprobs']['tokens'])
+        print('totaltokens', totaltokens)
+        created_on = datetime.utcnow()
         
-        # try:  # this is working
-        #     user_id = get_user_id_for_username(username)
-        #     print(user_id, totaltokens, created_on)
+        try:  # this is working
+            user_id = get_user_id_for_username(username)
+            print(user_id, totaltokens, created_on)
 
-        #     conn = sqlite3.connect(URI_SQLITE_DB, check_same_thread=False)
-        #     c = conn.cursor()
-        #     c.execute("INSERT INTO tokens (user_id, totaltokens, created_on) VALUES (?, ?, ?)", (user_id, totaltokens, created_on))
-        #     conn.commit()
-        #     c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, promptsubmit, str(engine), str(response_text), "NaN", created_on))
-        #     conn.commit()
+            conn = sqlite3.connect(URI_SQLITE_DB, check_same_thread=False)
+            c = conn.cursor()
+            c.execute("INSERT INTO tokens (user_id, totaltokens, created_on) VALUES (?, ?, ?)", (user_id, totaltokens, created_on))
+            conn.commit()
+            c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, promptsubmit, str(engine), str(response_text), "NaN", created_on))
+            conn.commit()
 
-        # except ValueError:
-        #     st.write(ValueError)
-        #     st.error("Error: ValueError")
+        except ValueError:
+            st.write(ValueError)
+            st.error("Error: ValueError")
 
         safety_engine = "content-filter-alpha-c4"
         submit = "<|endoftext|>" +  response['choices'][0]['text'] + "\n--\nLabel:"
@@ -212,18 +227,17 @@ def gpt3complete(preset_filename, prompt, username="guest"):
         print('totaltokens', totaltokens)
         created_on = datetime.utcnow()
 
-        # try: # this is working
+        try: # this is working
 
-        #     c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, submit, safety_engine, safety, safety, created_on))
-        #     conn.commit()
-        # except ValueError:
-        #     st.write(ValueError)
-        #     st.error("Error: ValueError")
+            c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, submit, safety_engine, safety, safety, created_on))
+            conn.commit()
+        except ValueError:
+            st.write(ValueError)
+            st.error("Error: ValueError")
 
         #if quotastatus is None:
         #    quotastatus = 0
-        underquota, quotastatus, quotalimit, product = None, None, None, None
-        #prepare_quotastatus(user_id)
+        underquota, quotastatus, quotalimit, product = prepare_quotastatus(user_id)
         print(quotastatus, 'quotastatus')
 
         response = [response, totaltokens, quotastatus, safety]
@@ -350,7 +364,9 @@ def prepare_quotastatus(user_id):
         print("URI_SQLITE_DB is None")
         st.error("Error: No URI_SQLITE_DB")
         return None
-    print('preparing quotastatus for user_id, user id is', user_id)
+    print('in gpt3complete, preparing quotastatus for user_id, user id is', user_id)
+
+    plan_id, plan_name = 'Free', 'Free'
     
     # calculate current month
     
@@ -399,47 +415,46 @@ def prepare_quotastatus(user_id):
     print('stripe id to verify is', stripeid2verify)
 
     if stripeid2verify:
+        customer_status_box = st.empty()
         try:
             customer = stripe.Customer.retrieve(stripeid2verify, expand=['subscriptions'])
             #st.write(customer)
+        except Exception as e:
+            customer = None
+            print("Could not verify with Stripe whether there is a customer id with Stripe", e)
+            st.info("Could not verify whether this user has a valid customer id, possibly because of a technical issue.  If you think this is in error and you are a valid paying customer, contact support @ nimblebooks.com. In the meantime, you can use all features that are normally available to registered users.")
+            # assign a default access level to unknown 
+            plan_id, plan_name, access_level_entitlement = 'Free', 'Free', 2
 
-            if customer:
-                #st.write("Customer record retrieved from Stripe")
-                print("Customer ID is", customer['id'])
-                stripeSubscriptionId = customer['subscriptions']['data'][0]['id']
-                print('stripeSubscriptionId', stripeSubscriptionId)
-                #st.write("Stripe Subscription ID is", stripeSubscriptionId)
-                # check whether subscription is valid
-                subscription_active = customer['subscriptions']['data'][0]['items']['data'][0]['plan']['active']
-                #print('subscription_active', subscription_active)
+        if customer:
+            #st.write("Customer record retrieved from Stripe")
+            print("Customer ID is", customer['id'])
+            stripeSubscriptionId = customer['subscriptions']['data'][0]['id']
+            print('stripeSubscriptionId', stripeSubscriptionId)
+            #st.write("Stripe Subscription ID is", stripeSubscriptionId)
+            # check whether subscription is valid
+            subscription_active = customer['subscriptions']['data'][0]['items']['data'][0]['plan']['active']
+            print('subscription_active = ', subscription_active)
+
+            if subscription_active:
                 plan_id = customer['subscriptions']['data'][0]['items']['data'][0]['plan']['id']
                 plan_name = customer['subscriptions']['data'][0]['items']['data'][0]['plan']['nickname']
-            
-                #st.write("Subscription_active is ", str(subscription_active), " | plan_id is ", plan_id, "| plan_name is ", plan_name)
-                if not subscription_active:
-                    plan_id, plan_name, access_level_entitlement = 'Free', 'Free', 2
-                    st.write('Subscription exists, but is not active.')
+                status_box_message = "Your subscription is active. Your plan is " + plan_name + "."
             else:
+
+                status_box_message = "Your subscription exists, but is not active. If you wish to reactivate, please contact support @ nimblebooks.com and provide the subscription id: " + stripeSubscriptionId + "."
                 plan_id, plan_name, access_level_entitlement = 'Free', 'Free', 2
-                product = plan_id, plan_name, access_level_entitlement
-        
-                # consult product dict to see the user's feature entitlements
- 
-            access_level_entitlement = product_dict[plan_id]['access_level_entitlement']
-            print('access_level_entitlement', access_level_entitlement)
-            product = (plan_id, plan_name, access_level_entitlement)
-        except Exception as e:
-            
-            print("Could not verify customer id with Stripe", e)
-            st.write("Could not verify customer id with Stripe", e)
-            print('Registered and logged in users are still entitled to the Free plan')
-            st.write('Registered and logged in users are still entitled to the Free plan')
-            plan_id, plan_name, access_level_entitlement = 'Free', 'Free', 2
-    else:
-        customer = None
-        print('stripeSubscriptionId', None)
+            customer_status_box.info(status_box_message)
+    else: #no stripeid2verify
         plan_id, plan_name, access_level_entitlement = 'Free', 'Free', 2
-        
+        product = plan_id, plan_name, access_level_entitlement
+
+    # consult product dict to see the user's feature entitlements
+
+    access_level_entitlement = product_dict[plan_id]['access_level_entitlement']
+    print('access_level_entitlement', access_level_entitlement)
+    product = (plan_id, plan_name, access_level_entitlement)
+    print('product', product)
     quotalimit = product_dict[plan_id]['quotalimit']
     print('quotalimit', quotalimit)
     print('quotastatus', quotastatus)
@@ -456,7 +471,7 @@ def prepare_quotastatus(user_id):
     
     product = (plan_id, plan_name, access_level_entitlement)
     return underquota, quotastatus, quotalimit, product
-    
+        
 def create_uuid():
     return str(uuid.uuid4())
 
