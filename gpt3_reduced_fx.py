@@ -149,7 +149,7 @@ def construct_preset_dict_for_UI_object(list_of_presets):
         with open(this_preset_file, 'rb') as f:
             this_preset = json.load(f)
             st.write(this_preset)
-            row = [preset, this_preset[i]['preset_name']]
+            row = [preset, this_preset['preset_name']]
             st.write(row)
             list_for_object.append(row)
         dict_of_presets_for_UI_object = dict(list_for_object)
