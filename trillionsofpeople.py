@@ -217,7 +217,7 @@ st.subheader('Explore Scenarios')
 
 st.markdown(""" You can choose from a variety of scenarios to explore, or submit your own.  The scenario provides guidance to the Create People method and provides additional detail to their biography.""")
 
-with st.form("Scenario", key='scenario'):
+with st.form("Scenario Explorer"):
     scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdea']
 #['2040', 'RCP85', 'CryptoApotheosis', 'UnsafeAI']
     scenario_dict = gpt3complete.construct_preset_dict_for_UI_object(scenario_list)
