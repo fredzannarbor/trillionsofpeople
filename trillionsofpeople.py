@@ -217,11 +217,11 @@ st.subheader('Explore Scenarios')
 
 st.markdown(""" You can choose from a variety of scenarios to explore, or submit your own.  The scenario provides guidance to the Create People method and provides additional detail to their biography.""")
 
-with st.form("Scenario", key='scenario'):
+with st.form("Scenario", key='scenario_explorer'):
     scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdea']
 #['2040', 'RCP85', 'CryptoApotheosis', 'UnsafeAI']
     scenario_dict = gpt3complete.construct_preset_dict_for_UI_object(scenario_list)
-    scenario_selected = st.selectbox('Choose a scenario', scenario_list, index=0, format_func = lambda x: scenario_dict.get(x), key='scenario')
+    scenario_selected = st.selectbox('Choose a scenario', scenario_list, index=0, format_func = lambda x: scenario_dict.get(x), key='scenarios_selected')
 
     selected_presetdf = presets_parser(scenario_selected)[0]
     st.write(selected_presetdf)
