@@ -141,7 +141,7 @@ def presets_parser(preset_filename):
 def construct_preset_dict_for_UI_object(list_of_presets):
     preset_dir = "app/presets/"
     dict_of_presets_for_UI_object = {}
-    for preset in list_of_presets:
+    for i, preset in enumerate(list_of_presets):
         st.write(preset)
         this_preset_file = preset_dir + preset + ".json"
         st.write(this_preset_file)
@@ -149,7 +149,7 @@ def construct_preset_dict_for_UI_object(list_of_presets):
         with open(this_preset_file, 'rb') as f:
             this_preset = json.load(f)
             st.write(this_preset)
-            row = [preset, this_preset]
+            row = [preset, this_preset['preset_name'][i]]
             st.write(row)
             list_for_object.append(row)
         dict_of_presets_for_UI_object = dict(list_for_object)
