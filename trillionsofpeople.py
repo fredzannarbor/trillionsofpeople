@@ -219,7 +219,7 @@ st.subheader('Explore Scenarios')
 st.markdown(""" You can choose from a variety of scenarios to explore, or submit your own.  The scenario provides guidance to the Create People method and provides additional detail to their biography.""")
 
 with st.form("Scenario Explorer"):
-    scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdeas']
+    scenario_list = ['SpaceXportation', 'SynopsisCreator', 'SimpleXmasStoryIdeas']
     scenario_dict ={}
     if scenario_list:
         scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
@@ -227,7 +227,7 @@ with st.form("Scenario Explorer"):
 
     selected_presetdf = presets_parser(scenario_selected)[0]
     st.write(selected_presetdf)
-    submitted = st.form_submit_button('Create Metadata')
+    submitted = st.form_submit_button('Create Scenario Personas')
     scenario_row_values = [], show_personas = []
     if submitted:
         st.info('Creating personas for scenario', selected_presetdf['preset name'].iloc[0])
