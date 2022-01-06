@@ -226,17 +226,22 @@ with st.form("Scenario", key='scenario'):
     selected_presetdf = presets_parser(scenario_selected)[0]
     st.write(selected_presetdf)
     submitted = st.form_submit_button('Create Metadata')
+    scenario_row_values = [], show_personas = []
     if submitted:
         st.info('Creating personas for scenario', selected_presetdf['preset name'].iloc[0])
         create_scenario_personas(selected_presetdf, n)
         if scenario_selected:
             scenario_row_values = create_scenario_personas(scenario_selected, 1)
         else:
+            scenario_row_values = None
             st.write("Please select a scenario.")
     if scenario_row_values:
         personas_df = pd.DataFrame(scenario_row_values)
         show_personas = personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
-    st.dataframe(show_personas.head(5))
+    if show_personas:
+        st.dataframe(show_personas.head(5))
+    else:
+        st.error("Problem creating personas, contact Fred Zimmerman for help.")
 
 
 st.subheader("Create People")
