@@ -294,4 +294,4 @@ st.markdown(""" The guiding principle of "one row per person" implies that the n
 
 st.subheader("References")
 
-st.json("trillionsofpeople.info.json")
+st.write("trillionsofpeople.info.json")
