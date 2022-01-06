@@ -219,7 +219,7 @@ st.subheader('Explore Scenarios')
 st.markdown(""" You can choose from a variety of scenarios to explore, or submit your own.  The scenario provides guidance to the Create People method and provides additional detail to their biography.""")
 
 with st.form("Scenario Explorer"):
-    scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdea']
+    scenario_list = ['SpaceXportation', 'SynopsisCreator', '        SimpleXmasStoryIdeas']
     scenario_dict ={}
     if scenario_list:
         scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
