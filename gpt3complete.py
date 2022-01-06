@@ -37,7 +37,7 @@ from flask_user import current_user
 from sqlalchemy import func, extract
 from sqlalchemy.dialects import postgresql
 
-from .s2orc.doc2json.pdf2json.process_pdf import process_pdf_file
+#from .s2orc.doc2json.pdf2json.process_pdf import process_pdf_file
 
 import sqlite3
 URI_SQLITE_DB = osenv.get('URI_SQLITE_DB')
