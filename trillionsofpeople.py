@@ -3,13 +3,15 @@ import glob
 import os
 
 if st.secrets['environment'] == 'cloud':
-    print('running on Streamlit Cloud with modified secrets and no quota tracking')
-    from gpt3complete import gpt3complete, presets_parser, post_process_text
+    print('running on Streamlit Cloud with secrets file, gpt3 reduced fx, and no quota tracking')
     datadir = 'people_data/'
-else:
-    print('running on Fredz local or self-hosted with original secrets and no quota tracking')
-    from app.utilities.gpt3complete import gpt3complete, presets_parser, post_process_text, construct_preset_dict_for_UI_object
-    datadir = 'app/data/trillions'
+elif st.secrets['environment'] == 'local':
+    print("running on Fred's mac with reduced gpt3 fx, secrets file and no quota tracking")
+
+    datadir = 'people_data/'
+elif st.secrets['environment'] == 'self-hosted':
+    print('running  self-hosted on AWS instance with reduced gpt3 fx, secrets file, and no quota tracking')
+    datadir = 'people_data/'
 
 import gibberish
 from numpy import extract, subtract
@@ -162,24 +164,44 @@ def migration_to(latitude, longitude, nearest_city):
     current_location = latitude + to_latitude_offset, longitude + to_longitude_offset, nearest_city + to_nearest_city_offset
     return current_location
 
-def create_scenario_personas(scenario, n):
-    values = []
-    species =  'sapiens'
-    gender = random.choice(['male', 'female'])
-    shortname = create_shortname(species)
-    year_of_birth_in_CE = target_year
-    thisperson4name = fourwordsname()
-    timeline = 'ours'
-    realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
-    #OCEAN_tuple =  'test' # OCEANtuple()
-    backstory = ""
-    backstory  = gpt3complete(scenario_selected, None,'trillions')[0]['choices'][0]['text']
-    values = shortname, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source#, OCEAN_tuple]
-    return values
+def create_scenario_personas(scenario, n, target_year, country):
+
+    
+    #scenario_personas_df = pd.DataFrame(columns=peopledf_columns)
+    scenario_personas_data =[]
+
+    scenario_personas = {}
+    for person in range(n):
+        values = []
+        latitude, longitude, nearest_city = random_spot(countries[country])
+        species =  'sapiens'
+        gender = random.choice(['male', 'female'])
+        shortname = create_shortname(species)
+        year_of_birth_in_CE = target_year
+        thisperson4name = fourwordsname()
+        timeline = 'ours'
+        realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
+        #OCEAN_tuple =  'test' # OCEANtuple()
+        backstory = ""
+        backstory  = gpt3complete(scenario_selected, None,'trillions')[0]['choices'][0]['text']
+        source = scenario
+        values = shortname, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source#, OCEAN_tuple]
+        zipped = zip(peopledf_columns, values)
+        scenario_personas_dict = dict(zipped)
+        scenario_personas_data.append(scenario_personas_dict)
+ 
+        pd.set_option('display.max_colwidth', 70)  
+
+    st.write(scenario_personas_data)
+    scenario_personas_df = pd.DataFrame(scenario_personas_data, columns = peopledf_columns)
+    
+    return scenario_personas_df
 
 filename = datadir + '/' + 'country.csv'
 
 countries = read_csv(filename)
+
+peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
 
 st.title('TrillionsOfPeople.info')
 st.markdown("""_One row for every person who ever lived, might have lived, or may live someday._
@@ -196,11 +218,11 @@ Sadly, the details of most of those lives are lost in the shadows of past and fu
 
 This focus on a small percentage of all lives has important practical implications. Our understanding of lives in the past is mostly limited to those few persons for whom we have written records or concrete artifacts; most are mysteries--names, skeletons, or less. Similarly, one of the major difficulties in implementing far-sighted energy and climate policies is that future people are abstractions. 
 
-**TOP** is a tool to make both past and future s feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
+**TOP** is a tool to make both past and futures feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
 """)
 st.sidebar.markdown(""" ## Navigation
 
-- Explore Scenarios
+- [Explore Scenarios](#explore-scenarios)
 - [Create People](#create-people)
 - [Browse People](#browse-people)
 - Submit Data
@@ -216,32 +238,37 @@ This project, to achieve its vision, must involve many people from all disciplin
 
 st.subheader('Explore Scenarios')
 
-st.markdown(""" You can choose from a variety of scenarios to explore, or submit your own.  The scenario provides guidance to the Create People method and provides additional detail to their biography.""")
+st.markdown(""" You can choose from a variety of scenarios to explore, or (in future) submit your own.  The scenario provides guidance to the Create People method, which creates a dataframe of people with appropriate characteristics.""")
 
 with st.form("Scenario Explorer"):
-    scenario_list = ['SpaceXportation', 'SynopsisCreator', 'SimpleXmasStoryIdeas']
+    scenario_list = ['GlobalTrends2040RD']
     scenario_dict ={}
     if scenario_list:
         scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
     scenario_selected = st.selectbox('Choose a scenario', scenario_list, index=0, format_func = lambda x: scenario_dict.get(x))
-
+    #n = st.slider('Number of people', min_value=1, max_value=5, value=
+    #st.write(scenario_selected)
     selected_presetdf = presets_parser(scenario_selected)[0]
-    st.write(selected_presetdf)
+    #st.write(selected_presetdf)
+    scenario_name = selected_presetdf['preset_name'].iloc[0]
+    st.write(scenario_name)
     submitted = st.form_submit_button('Create Scenario Personas')
     scenario_row_values, show_personas = [], []
     if submitted:
-        st.info('Creating personas for scenario', selected_presetdf['preset name'].iloc[0])
-        create_scenario_personas(selected_presetdf, n)
+        n = 3
+        infomessage = f"Creating {n} personas for {scenario_name}."
+        st.info(infomessage)
         if scenario_selected:
-            scenario_row_values = create_scenario_personas(scenario_selected, 1)
+            scenario_personas_df = create_scenario_personas(scenario_selected, n, 2040, "Australia")
+        if not scenario_personas_df.empty:
+            show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
+        if not show_personas.empty:
+            st.dataframe(show_personas.head(5))
         else:
+            st.info("Please select a scenario.")
+    else:
+        st.info('Press Create Scenario Personas to create personas.')
 
-            st.write("Please select a scenario.")
-    if scenario_row_values:
-        personas_df = pd.DataFrame(scenario_row_values)
-        show_personas = personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
-    if show_personas:
-        st.dataframe(show_personas.head(5))
     else:
         st.error("Problem creating personas, contact Fred Zimmerman for help.")
 
@@ -278,7 +305,7 @@ with st.form("my_form"):
         latitude, longitude, nearest_city = random_spot(countries[country])
 
 
-peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
+
 
 peopledf = pd.DataFrame(columns=peopledf_columns)
 peopledata =[]
