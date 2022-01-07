@@ -265,13 +265,12 @@ with st.form("Scenario Explorer"):
         if not show_personas.empty:
             st.dataframe(show_personas.head(5))
         else:
-            st.info("Please select a scenario.")
+            st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
+
     else:
         st.info('Press Create Scenario Personas to create personas.')
 
-    else:
-        st.error("Problem creating personas, contact Fred Zimmerman for help.")
-
+   
 
 st.subheader("Create People")
 
