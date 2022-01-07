@@ -25,7 +25,7 @@ stripe.api_key = stripe_keys["secret_key"]
 
 import openai
 
-
+openai.api_key = st.secrets['OPENAI_API_KEY']
 openai_user_id_for_safety_tracking = os.environ['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
 
 import pandas as pd
