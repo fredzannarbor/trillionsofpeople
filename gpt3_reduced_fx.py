@@ -203,20 +203,20 @@ def gpt3complete(preset_filename, prompt, username="guest"):
         print('totaltokens', totaltokens)
         created_on = datetime.utcnow()
         
-        try:  # this is working
-            user_id = get_user_id_for_username(username)
-            print(user_id, totaltokens, created_on)
+        # try:  # this is working
+        #     user_id = get_user_id_for_username(username)
+        #     print(user_id, totaltokens, created_on)
 
-            conn = sqlite3.connect(URI_SQLITE_DB, check_same_thread=False)
-            c = conn.cursor()
-            c.execute("INSERT INTO tokens (user_id, totaltokens, created_on) VALUES (?, ?, ?)", (user_id, totaltokens, created_on))
-            conn.commit()
-            c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, promptsubmit, str(engine), str(response_text), "NaN", created_on))
-            conn.commit()
+        #     conn = sqlite3.connect(URI_SQLITE_DB, check_same_thread=False)
+        #     c = conn.cursor()
+        #     c.execute("INSERT INTO tokens (user_id, totaltokens, created_on) VALUES (?, ?, ?)", (user_id, totaltokens, created_on))
+        #     conn.commit()
+        #     c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, promptsubmit, str(engine), str(response_text), "NaN", created_on))
+        #     conn.commit()
 
-        except ValueError:
-            st.write(ValueError)
-            st.error("Error: ValueError")
+        # except ValueError:
+        #     st.write(ValueError)
+        #     st.error("Error: ValueError")
 
         safety_engine = "content-filter-alpha-c4"
         submit = "<|endoftext|>" +  response['choices'][0]['text'] + "\n--\nLabel:"
@@ -230,13 +230,13 @@ def gpt3complete(preset_filename, prompt, username="guest"):
         print('totaltokens', totaltokens)
         created_on = datetime.utcnow()
 
-        try: # this is working
+        # try: # this is working
 
-            c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, submit, safety_engine, safety, safety, created_on))
-            conn.commit()
-        except ValueError:
-            st.write(ValueError)
-            st.error("Error: ValueError")
+        #     c.execute("INSERT INTO transactions (user_id, totaltokens, pre_user_input, user_input, post_user_input, prompt, engine, response, safety_rating, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, totaltokens, pre_user_input, promptsubmit, post_user_input, submit, safety_engine, safety, safety, created_on))
+        #     conn.commit()
+        # except ValueError:
+        #     st.write(ValueError)
+        #     st.error("Error: ValueError")
 
         #if quotastatus is None:
         #    quotastatus = 0
