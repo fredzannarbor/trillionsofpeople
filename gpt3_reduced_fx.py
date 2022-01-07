@@ -242,6 +242,7 @@ def gpt3complete(preset_filename, prompt, username="guest"):
         #    quotastatus = 0
         user_id = 37
         #underquota, quotastatus, quotalimit, product = prepare_quotastatus(user_id)
+        quotastatus = True
         print(quotastatus, 'quotastatus')
         quotastatus = True
         response = [response, totaltokens, quotastatus, safety]
