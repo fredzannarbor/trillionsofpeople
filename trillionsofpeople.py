@@ -221,7 +221,7 @@ _Trillions_ is a tool to make both past and futures feel more real, using state-
 st.sidebar.markdown(""" ## Navigation
 
 - [Explore Scenarios](#explore-scenarios)
-- [Create People](#create-people)
+- [Create People From Any Era](#create-people)
 - [Browse People](#browse-people)
 - [Submit Data](#submit-data)
 - [Methods](#methods)
@@ -230,13 +230,13 @@ st.sidebar.markdown(""" ## Navigation
 
 st.sidebar.markdown("""## Partners
 
-This project needs beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info) 
+This project needs beta users, demographers, futurists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info) 
 
 --Fred Zimmerman, Founder""")
 
 st.subheader('Explore Scenarios')
 
-st.markdown(""" You can choose from a variety of scenarios to explore. The first set of scenarios is drawn from the Office of the Director of National Intelligence's GLOBAL TRENDS 2040 (ODNI 2021), a planning and visioning exercise that the US Intelligence conducts every five years. The next set will be drawn from the IPCC's Representative Concentration Scenarios, which chart possible GHG futures for the year 2100.  In future, you will be able to submit scenarios to the project yourself.""")
+st.markdown(""" You can choose from a variety of scenarios to explore. The first set of scenarios is drawn from the Office of the Director of National Intelligence's _Global Trends 2040_ (ODNI 2021), a planning and visioning exercise that the US Intelligence conducts every five years. The next set will be drawn from the IPCC's Representative Concentration Scenarios, which chart possible GHG futures for the year 2100.  In future, you will be able to submit scenarios to the project yourself.""")
 
 with st.form("Scenario Explorer"):
     scenario_list = ['GlobalTrends2040RD']
@@ -269,7 +269,7 @@ with st.form("Scenario Explorer"):
 
    
 
-st.subheader("Create People")
+st.subheader("Create People From Any Era")
 
 with st.form("my_form"):
 
@@ -326,7 +326,7 @@ for i in range(j):
     response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username)
     openai_response= response[0]
     backstory = openai_response['choices'][0]['text']
-    values = [shortname,year_of_birth_in_CE,  gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
+    values = [shortname,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
     zipped = zip(peopledf_columns, values)
     people_dict = dict(zipped)
     peopledata.append(people_dict)
@@ -360,6 +360,23 @@ st.subheader("Methods")
 
 st.markdown(""" The guiding principle of "one row per person" implies that the number of columns must be kept manageably low. There may be a time where a great profusion of data tables and models is needed to capture vast amounts of data about each individual and their relations to one another and to the physical and social worlds, but the initial goal is to be as parsimonious  as possible. """)
 
+st.markdown(""" #### Data Dictionary
+
+    | Column Name | Description |
+    |-------------|-------------|
+| shortname | shortnames are culture-agnostic
+year_of_birth_in_CE | year of birth in the Common Era, negative values are BCE, positive values are CE
+gender | both reproductive and social aspects are covered
+species
+timeline
+realness
+latitude
+longitude
+nearest_city
+backstory
+thisperson4name
+source
+""")
 st.subheader("References")
 
 # open file with references
