@@ -139,22 +139,26 @@ def presets_parser(preset_filename):
     return presetsdf, preset_name, preset_description, preset_instructions, preset_additional_notes, preset_placeholder, pre_user_input, post_user_input, prompt, engine, finetune_model, temperature, max_tokens, top_p, fp, pp, stop_sequence, echo_on, preset_pagetype, preset_db, user, organization
 
 def construct_preset_dict_for_UI_object(list_of_presets):
+    print("constructing preset dict for UI object")
+    print("list_of_presets", list_of_presets)
     preset_dir = "app/presets/"
     dict_of_presets_for_UI_object = {}
+    list_for_object = []
     for i, preset in enumerate(list_of_presets):
         print('looping over presets', i)
         this_preset_file = preset_dir + preset + ".json"
         print('adding', this_preset_file)
-        list_for_object = []
         with open(this_preset_file, 'rb') as f:
             this_preset = json.load(f)
             print(this_preset)
             this_preset_df = pd.DataFrame(this_preset)
             row = [preset, this_preset_df['preset_name'].iloc[0]]
-            print(row)
+            print('row', row)
             list_for_object.append(row)
-        dict_of_presets_for_UI_object = dict(list_for_object)
 
+            dict_of_presets_for_UI_object = dict(list_for_object)
+    print("list_for_object", list_for_object)
+    print('dict of presets', dict_of_presets_for_UI_object)
     return dict_of_presets_for_UI_object
 
 def gpt3complete(preset_filename, prompt, username="guest"):

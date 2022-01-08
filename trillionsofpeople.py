@@ -173,6 +173,7 @@ def create_scenario_personas(scenario, n, target_year, country):
     scenario_personas = {}
     for person in range(n):
         values = []
+
         latitude, longitude, nearest_city = random_spot(countries[country])
         species =  'sapiens'
         gender = random.choice(['male', 'female'])
@@ -183,7 +184,9 @@ def create_scenario_personas(scenario, n, target_year, country):
         realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
         #OCEAN_tuple =  'test' # OCEANtuple()
         backstory = ""
-        backstory  = gpt3complete(scenario_selected, None,'trillions')[0]['choices'][0]['text']
+        cues = "job, etc."
+        prompt = 'Biographical details: ' + gender + '|' + country + '|' + cues
+        backstory  = gpt3complete(scenario_selected, prompt,'trillions')[0]['choices'][0]['text']
         source = scenario
         values = shortname, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source#, OCEAN_tuple]
         zipped = zip(peopledf_columns, values)
@@ -230,16 +233,16 @@ st.sidebar.markdown(""" ## Navigation
 
 st.sidebar.markdown("""## Partners
 
-This project needs beta users, demographers, futurists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info) 
+This project needs beta users, demographers, futurists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info). 
 
 --Fred Zimmerman, Founder""")
 
 st.subheader('Explore Scenarios')
 
-st.markdown(""" You can choose from a variety of scenarios to explore. The first set of scenarios is drawn from the Office of the Director of National Intelligence's _Global Trends 2040_ (ODNI 2021), a planning and visioning exercise that the US Intelligence conducts every five years. The next set will be drawn from the IPCC's Representative Concentration Scenarios, which chart possible GHG futures for the year 2100.  In future, you will be able to submit scenarios to the project yourself.""")
+st.markdown(""" You can choose from a variety of scenarios to explore. The first set of [scenarios](https://www.dni.gov/index.php/gt2040-home/scenarios-for-2040) is drawn from the Office of the Director of National Intelligence's _Global Trends 2040_ (ODNI 2021), a planning and visioning exercise that the US Intelligence conducts every five years. The next set will be drawn from the IPCC's Representative Concentration Scenarios, which chart possible GHG futures for the year 2100.  In future, you will be able to submit scenarios to the project yourself.""")
 
 with st.form("Scenario Explorer"):
-    scenario_list = ['GlobalTrends2040RD']
+    scenario_list = ['GlobalTrends2040RD', 'GlobalTrends2040AWA', 'GlobalTrends2040CC', 'GlobalTrends2040SS', 'GlobalTrends2040SSpb','GlobalTrends2040TM']
     scenario_dict ={}
     if scenario_list:
         scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
@@ -323,6 +326,7 @@ for i in range(j):
         prompt = shortname + ' will be born in the area now known as ' + country + '.'
     source = 'TOP.info'
     username = 'trillions'
+    prompt = "Biographic details: " + gender + '|' + country 
     response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username)
     openai_response= response[0]
     backstory = openai_response['choices'][0]['text']

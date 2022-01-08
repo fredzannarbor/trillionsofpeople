@@ -101,9 +101,15 @@
       "attachments": [],
       "citationKey": "PRB2021",
       "citekey": "PRB2021",
-      "creators": [],
+      "creators": [
+        {
+          "creatorType": "author",
+          "name": "Population Reference Bureau"
+        }
+      ],
+      "date": "2021",
       "dateAdded": "2021-12-16T18:45:58Z",
-      "dateModified": "2022-01-01T23:55:23Z",
+      "dateModified": "2022-01-08T06:04:08Z",
       "extra": "Citation Key: PRB2021",
       "itemID": 6418,
       "itemKey": "PB6B3I7N",
@@ -206,6 +212,167 @@
       "url": "http://arxiv.org/abs/1603.07771",
       "version": 0,
       "volume": "abs/1603.07771"
+    },
+    {
+      "accessDate": "2022-01-07T22:15:39Z",
+      "attachments": [
+        {
+          "dateAdded": "2022-01-07T22:15:44Z",
+          "dateModified": "2022-01-07T22:15:44Z",
+          "itemType": "attachment",
+          "path": "/Users/fred/Zotero/storage/59USE4TS/introduction.html",
+          "relations": [],
+          "tags": [],
+          "title": "Office of the Director of National Intelligence - Global Trends",
+          "uri": "http://zotero.org/users/local/gbt17upb/items/59USE4TS"
+        }
+      ],
+      "citationKey": "officeofthedirectorofnationalintelligenceGlobalTrends20402021",
+      "citekey": "officeofthedirectorofnationalintelligenceGlobalTrends20402021",
+      "creators": [
+        {
+          "creatorType": "author",
+          "name": "Office of the Director of National Intelligence"
+        }
+      ],
+      "date": "2021",
+      "dateAdded": "2022-01-07T22:15:39Z",
+      "dateModified": "2022-01-07T22:19:32Z",
+      "itemID": 6431,
+      "itemKey": "W592WGFG",
+      "itemType": "webpage",
+      "key": "W592WGFG",
+      "libraryID": 1,
+      "notes": [],
+      "publicationTitle": "Global Trends 2040: A More Contested World",
+      "relations": [],
+      "select": "zotero://select/library/items/W592WGFG",
+      "tags": [],
+      "title": "Global Trends 2040: A More Contested World",
+      "uri": "http://zotero.org/users/local/gbt17upb/items/W592WGFG",
+      "url": "https://www.dni.gov/index.php/gt2040-home/introduction",
+      "version": 0
+    },
+    {
+      "DOI": "10/brtf7r",
+      "ISSN": "1573-1480",
+      "abstractNote": "This paper summarizes the development process and main characteristics of the Representative Concentration Pathways (RCPs), a set of four new pathways developed for the climate modeling community as a basis for long-term and near-term modeling experiments. The four RCPs together span the range of year 2100 radiative forcing values found in the open literature, i.e. from 2.6 to 8.5 W/m2. The RCPs are the product of an innovative collaboration between integrated assessment modelers, climate modelers, terrestrial ecosystem modelers and emission inventory experts. The resulting product forms a comprehensive data set with high spatial and sectoral resolutions for the period extending to 2100. Land use and emissions of air pollutants and greenhouse gases are reported mostly at a 0.5 × 0.5 degree spatial resolution, with air pollutants also provided per sector (for well-mixed gases, a coarser resolution is used). The underlying integrated assessment model outputs for land use, atmospheric emissions and concentration data were harmonized across models and scenarios to ensure consistency with historical observations while preserving individual scenario trends. For most variables, the RCPs cover a wide range of the existing literature. The RCPs are supplemented with extensions (Extended Concentration Pathways, ECPs), which allow climate modeling experiments through the year 2300. The RCPs are an important development in climate research and provide a potential foundation for further research and assessment, including emissions mitigation and impact analysis.",
+      "accessDate": "2022-01-08T06:02:16Z",
+      "attachments": [
+        {
+          "dateAdded": "2022-01-08T06:02:18Z",
+          "dateModified": "2022-01-08T06:02:18Z",
+          "itemType": "attachment",
+          "path": "/Users/fred/Zotero/storage/RA6M5ZSJ/van Vuuren et al. - 2011 - The representative concentration pathways an over.pdf",
+          "relations": [],
+          "tags": [],
+          "title": "Springer Full Text PDF",
+          "uri": "http://zotero.org/users/local/gbt17upb/items/RA6M5ZSJ"
+        }
+      ],
+      "citationKey": "vanvuurenRepresentativeConcentrationPathways2011",
+      "citekey": "vanvuurenRepresentativeConcentrationPathways2011",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Detlef P.",
+          "lastName": "van Vuuren"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jae",
+          "lastName": "Edmonds"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Mikiko",
+          "lastName": "Kainuma"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Keywan",
+          "lastName": "Riahi"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Allison",
+          "lastName": "Thomson"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Kathy",
+          "lastName": "Hibbard"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "George C.",
+          "lastName": "Hurtt"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Tom",
+          "lastName": "Kram"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Volker",
+          "lastName": "Krey"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jean-Francois",
+          "lastName": "Lamarque"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Toshihiko",
+          "lastName": "Masui"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Malte",
+          "lastName": "Meinshausen"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Nebojsa",
+          "lastName": "Nakicenovic"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Steven J.",
+          "lastName": "Smith"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Steven K.",
+          "lastName": "Rose"
+        }
+      ],
+      "date": "2011-08-05",
+      "dateAdded": "2022-01-08T06:02:16Z",
+      "dateModified": "2022-01-08T06:02:17Z",
+      "issue": "1",
+      "itemID": 6433,
+      "itemKey": "8JS28D64",
+      "itemType": "journalArticle",
+      "journalAbbreviation": "Climatic Change",
+      "key": "8JS28D64",
+      "language": "en",
+      "libraryCatalog": "Springer Link",
+      "libraryID": 1,
+      "notes": [],
+      "pages": "5",
+      "publicationTitle": "Climatic Change",
+      "relations": [],
+      "select": "zotero://select/library/items/8JS28D64",
+      "shortTitle": "The representative concentration pathways",
+      "tags": [],
+      "title": "The representative concentration pathways: an overview",
+      "uri": "http://zotero.org/users/local/gbt17upb/items/8JS28D64",
+      "url": "https://doi.org/10.1007/s10584-011-0148-z",
+      "version": 0,
+      "volume": "109"
     }
   ],
   "version": {
