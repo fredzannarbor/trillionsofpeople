@@ -3,3 +3,5 @@ Graeber, David, and David Wengrow. The Dawn of Everything: A New History of Huma
 “How Many People Have Ever Lived on Earth? | PRB.” Accessed December 16, 2021. https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/.
 
 Lebret, Rémi, David Grangier, and Michael Auli. “Generating Text from Structured Data with Application to the Biography Domain.” CoRR abs/1603.07771 (2016). http://arxiv.org/abs/1603.07771.
+
+Office of the Director of National Intelligence. “Global Trends 2040: A More Contested World.” Global Trends 2040: A More Contested World, 2021. https://www.dni.gov/index.php/gt2040-home/introduction.

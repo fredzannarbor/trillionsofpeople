@@ -206,11 +206,9 @@ peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 
 st.title('TrillionsOfPeople.info')
 st.markdown("""_One row for every person who ever lived, might have lived, or may live someday._
 
-_Submit, authenticate, enhance, claim, and share stories about your fellow souls._
+_Submit, authenticate, enhance, and share stories about your fellow souls._
 
 _A tool to explore the human story._
-
-## About
 
 The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. The numbers become even larger when you add mythic and fictional characters, who have been born and died thousands of times, and have some of the most interesting stories.
 
@@ -218,27 +216,27 @@ Sadly, the details of most of those lives are lost in the shadows of past and fu
 
 This focus on a small percentage of all lives has important practical implications. Our understanding of lives in the past is mostly limited to those few persons for whom we have written records or concrete artifacts; most are mysteries--names, skeletons, or less. Similarly, one of the major difficulties in implementing far-sighted energy and climate policies is that future people are abstractions. 
 
-**TOP** is a tool to make both past and futures feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
+_Trillions_ is a tool to make both past and futures feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
 """)
 st.sidebar.markdown(""" ## Navigation
 
 - [Explore Scenarios](#explore-scenarios)
 - [Create People](#create-people)
 - [Browse People](#browse-people)
-- Submit Data
+- [Submit Data](#submit-data)
 - [Methods](#methods)
 - [References](#references)""")
 
 
 st.sidebar.markdown("""## Partners
 
-This project, to achieve its vision, must involve many people from all disciplines and walks of life.  It must also grow as rapidly as possible to take on a life of its own as an independent organization.  For that, we will need data providers, beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, and investors! Please contact me at [wfzimmerman@gmail.com](mailto:wfzimmerman@gmail.com.) 
+This project needs beta users, demographers, futurists, coders, GIS specialists, designers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info) 
 
 --Fred Zimmerman, Founder""")
 
 st.subheader('Explore Scenarios')
 
-st.markdown(""" You can choose from a variety of scenarios to explore, or (in future) submit your own.  The scenario provides guidance to the Create People method, which creates a dataframe of people with appropriate characteristics.""")
+st.markdown(""" You can choose from a variety of scenarios to explore. The first set of scenarios is drawn from the Office of the Director of National Intelligence's GLOBAL TRENDS 2040 (ODNI 2021), a planning and visioning exercise that the US Intelligence conducts every five years. The next set will be drawn from the IPCC's Representative Concentration Scenarios, which chart possible GHG futures for the year 2100.  In future, you will be able to submit scenarios to the project yourself.""")
 
 with st.form("Scenario Explorer"):
     scenario_list = ['GlobalTrends2040RD']
@@ -251,15 +249,14 @@ with st.form("Scenario Explorer"):
     selected_presetdf = presets_parser(scenario_selected)[0]
     #st.write(selected_presetdf)
     scenario_name = selected_presetdf['preset_name'].iloc[0]
-    st.write(scenario_name)
+    n = st.slider("Select number of personas to build", 1, 5, value=1, help="To build larger numbers of personas, contact Fred Zimmerman.")
     submitted = st.form_submit_button('Create Scenario Personas')
     scenario_row_values, show_personas = [], []
     if submitted:
-        n = 3
         infomessage = f"Creating {n} personas for {scenario_name}."
         st.info(infomessage)
         if scenario_selected:
-            scenario_personas_df = create_scenario_personas(scenario_selected, n, 2040, "Australia")
+            scenario_personas_df = create_scenario_personas(scenario_selected, 1, 2040, "Australia")
         if not scenario_personas_df.empty:
             show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
         if not show_personas.empty:
@@ -268,7 +265,7 @@ with st.form("Scenario Explorer"):
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
     else:
-        st.info('Press Create Scenario Personas to create personas.')
+        pass
 
    
 
@@ -356,8 +353,8 @@ browsepeopledf = pd.DataFrame(people)
 st.dataframe(browsepeopledf.head(5))
 
 
-st.subheader("Load People")
-st.markdown("""To load real, fictitious, or hypothetical people, please contact Fred Zimmerman.  Upload options coming.""")
+st.subheader("Submit data")
+st.markdown("""To load, or request the creation of, real, fictitious, or hypothetical people with particular characteristics, please contact Fred Zimmerman.  Upload options coming.""")
 
 st.subheader("Methods")
 

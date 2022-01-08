@@ -142,16 +142,16 @@ def construct_preset_dict_for_UI_object(list_of_presets):
     preset_dir = "app/presets/"
     dict_of_presets_for_UI_object = {}
     for i, preset in enumerate(list_of_presets):
-        st.write(preset)
+        print('looping over presets', i)
         this_preset_file = preset_dir + preset + ".json"
-        st.write(this_preset_file)
+        print('adding', this_preset_file)
         list_for_object = []
         with open(this_preset_file, 'rb') as f:
             this_preset = json.load(f)
-            st.write(this_preset)
+            print(this_preset)
             this_preset_df = pd.DataFrame(this_preset)
             row = [preset, this_preset_df['preset_name'].iloc[0]]
-            st.write(row)
+            print(row)
             list_for_object.append(row)
         dict_of_presets_for_UI_object = dict(list_for_object)
 
