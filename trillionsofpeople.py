@@ -240,7 +240,7 @@ st.sidebar.markdown("""## Partners
 This project needs beta users, demographers, futurists, historians, anthropologists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info). 
 
 --Fred Zimmerman, Founder""")
-st.sidebar.subheader("Version Information")
+st.sidebar.markdown(""" **Version Information** """)
 
 version_trillions = show_current_version()
 st.sidebar.markdown(version_trillions)

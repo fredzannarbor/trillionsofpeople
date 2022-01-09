@@ -129,9 +129,15 @@ def show_current_version():
       mtime = 0
   last_modified_date = datetime.fromtimestamp(mtime)
 
+  git_describe_long = subprocess.check_output(["git", "describe", "--long"]).decode("utf-8").strip()
+
+  git_rev_parse = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+
   last_commit_message = str(subprocess.check_output(['git', 'log', '-1', '--pretty=%B']).decode('utf-8').strip())
 
   __version_info__ = subprocess.check_output(["git", "describe", "--long"]).decode("utf-8").strip() + " | " + subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip() + ' | last updated: ' + last_modified_date.strftime("%Y-%m-%d %H:%M:%S") + ' | ' + last_commit_message
+
+  version2 = 
 
 
   __version__=__version_info__  

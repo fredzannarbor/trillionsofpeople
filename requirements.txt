@@ -19,3 +19,4 @@ flask_sqlalchemy
 email_validator
 flask
 datasets
+spacy
