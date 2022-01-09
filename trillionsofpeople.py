@@ -1,6 +1,7 @@
 import streamlit as st
 import glob
 import os
+import csv
 
 if st.secrets['environment'] == 'cloud':
     print('running on Streamlit Cloud with secrets file, gpt3 reduced fx, and no quota tracking')
@@ -35,9 +36,6 @@ def cacheaware_gpt3complete(preset, prompt, username="trillions"):
     response = gpt3complete('CreatePersonBackstory', prompt, username)
     return response
 
-def read_csv(filename):
-    countries = pd.read_csv(filename, names =['code', 'country_name'],  index_col=0, squeeze=True).to_dict()
-    return countries
 
 def load_people():
     all_people_data = pd.DataFrame()
@@ -195,14 +193,19 @@ def create_scenario_personas(scenario, n, target_year, country):
  
         pd.set_option('display.max_colwidth', 70)  
 
-    st.write(scenario_personas_data)
+    print(scenario_personas_data)
     scenario_personas_df = pd.DataFrame(scenario_personas_data, columns = peopledf_columns)
     
     return scenario_personas_df
 
+# load files at startup
+
 filename = datadir + '/' + 'country.csv'
 
-countries = read_csv(filename)
+countries_df = pd.read_csv(datadir + '/' + 'country.csv', names =['country_name', 'code'],  index_col=0, squeeze=True)
+countries_list = countries_df.index.tolist()
+countries = countries_df.to_dict()
+
 
 peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
 
@@ -213,7 +216,7 @@ _Submit, authenticate, enhance, and share stories about your fellow souls._
 
 _A tool to explore the human story._
 
-The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 and one trillion by the year 9,000 CE. An optimist may hope that eventually there will be trillions of human lives. The numbers become even larger when you add mythic and fictional characters, who have been born and died thousands of times, and have some of the most interesting stories.
+The best available estimate is that about 117 billion unique humans have ever lived on Earth. [(Population Reference Bureau, 2021).](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) With new people being born at rate of about 133 million/year, this number is expected to rise to 121 billion by 2050, about 129 billion by 2100, and, trends continuing, 250 billion by the year 3000 CE and one trillion by the year 9000 CE. An optimist may hope that eventually there will be trillions of human lives. The numbers become even larger when you add mythic and fictional characters, who have been born and died thousands of times, and have some of the most interesting stories.
 
 Sadly, the details of most of those lives are lost in the shadows of past and future. Many millenia of human history are shrouded in near-complete mystery.  (Graeber 2021). WikiBio dataset derived from Wikipedia's "biographical persons" category has about 784,000 records; but only 200 of those are deemed "core biographies" by the WikiBio team and given top-tier treatment. (WikiBio 2021)  
 
@@ -233,7 +236,7 @@ st.sidebar.markdown(""" ## Navigation
 
 st.sidebar.markdown("""## Partners
 
-This project needs beta users, demographers, futurists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info). 
+This project needs beta users, demographers, futurists, historians, anthropologists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info). 
 
 --Fred Zimmerman, Founder""")
 
@@ -247,23 +250,26 @@ with st.form("Scenario Explorer"):
     if scenario_list:
         scenario_dict = construct_preset_dict_for_UI_object(scenario_list)
     scenario_selected = st.selectbox('Choose a scenario', scenario_list, index=0, format_func = lambda x: scenario_dict.get(x))
-    #n = st.slider('Number of people', min_value=1, max_value=5, value=
-    #st.write(scenario_selected)
+
     selected_presetdf = presets_parser(scenario_selected)[0]
-    #st.write(selected_presetdf)
+ 
     scenario_name = selected_presetdf['preset_name'].iloc[0]
     n = st.slider("Select number of personas to build", 1, 5, value=1, help="To build larger numbers of personas, contact Fred Zimmerman.")
     submitted = st.form_submit_button('Create Scenario Personas')
     scenario_row_values, show_personas = [], []
+    random_country = random.choice(countries_list)
     if submitted:
         infomessage = f"Creating {n} personas for {scenario_name}."
         st.info(infomessage)
         if scenario_selected:
-            scenario_personas_df = create_scenario_personas(scenario_selected, 1, 2040, "Australia")
+            scenario_personas_df = create_scenario_personas(scenario_selected, 1, 2040, random_country)
         if not scenario_personas_df.empty:
             show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
+            transposed = show_personas.astype(str).transpose().head(15)
+            #st.dataframe(transposed)
         if not show_personas.empty:
             st.dataframe(show_personas.head(5))
+            st.dataframe(transposed, height=396) # 5.5 in x 72 dpi
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
@@ -292,63 +298,76 @@ with st.form("my_form"):
         target_year = year
 
     latitude,longitude, nearest_city = 0, 0, "Unknown"
-    indexcountry = random.randrange(0, len(countries))
-    country = st.selectbox('Pick a location that corresponds to a modern country.', options=countries.keys(), help ='Unknown locations are retrieved occasionally during peak loS.')
+    indexcountry = random.randrange(0, len(countries_list))
+    st.write(indexcountry)
+    country = st.selectbox('Accept random, or pick one', options=countries.keys(), help ='Unknown locations are retrieved occasionally during peak hours.', index=indexcountry)
+    st.write('You selected:', country)
 
     j = int(st.number_input('How many people do you want to generate? [For batch jobs, contact Fred Zimmerman.]', value=1, min_value=1, max_value=5, step=1, help='Processing time is linear with the number of people generated.'))
    
     # Every form must have a submit button.
     submitted = st.form_submit_button("Submit")
     if submitted:
-        #st.write('You selected:', country)
-        latitude, longitude, nearest_city = random_spot(countries[country])
+        st.write('submitting', country)
 
+        peopledf = pd.DataFrame(columns=peopledf_columns)
+        peopledata =[]
 
+    # with form info in hand, create personas
 
+        for i in range(j):
+            species =  'sapiens'
+            gender = random.choice(['male', 'female'])
+            shortname = create_shortname(species)
+            year_of_birth_in_CE = target_year
+            thisperson4name = fourwordsname()
+            timeline = 'ours'
+            realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
+            #OCEAN_tuple =  'test' # OCEANtuple()
+            if year < 0:
+                prompt = shortname + ' was born ' + str(year_of_birth_in_CE) + 'years ago in  the area now known as ' + country + '.'
+            if year == 0:
+                prompt = shortname + ' was born in the area now known as ' + country + '.'
+            if year > 0:
+                prompt = shortname + ' will be born in the area now known as ' + country + '.'
+            source = 'TOP.info'
+            username = 'trillions'
+            latitude, longitude, nearest_city = random_spot(country)
+            prompt = "Biographic details: " + gender + '|' + country 
+            response = gpt3complete('CreatePersonBackstory', prompt, username)
+            openai_response= response[0]
+            backstory = openai_response['choices'][0]['text']
+            #st.write(backstory)
+            values = [shortname,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
+            #st.write(values)
+            zipped = zip(peopledf_columns, values)
+            people_dict = dict(zipped)
+            peopledata.append(people_dict)
+            
 
-peopledf = pd.DataFrame(columns=peopledf_columns)
-peopledata =[]
+        pd.set_option('display.max_colwidth', 70)  
+        peopledf = peopledf.append(peopledata)
+        #st.write(peopledf)
 
-for i in range(j):
-    species =  'sapiens'
-    gender = random.choice(['male', 'female'])
-    shortname = create_shortname(species)
-    year_of_birth_in_CE = target_year
-    thisperson4name = fourwordsname()
-    timeline = 'ours'
-    realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
-    #OCEAN_tuple =  'test' # OCEANtuple()
-    if year < 0:
-        prompt = shortname + ' was born ' + str(year_of_birth_in_CE) + 'years ago in  the area now known as ' + country + '.'
-    if year == 0:
-        prompt = shortname + ' was born in the area now known as ' + country + '.'
-    if year > 0:
-        prompt = shortname + ' will be born in the area now known as ' + country + '.'
-    source = 'TOP.info'
-    username = 'trillions'
-    prompt = "Biographic details: " + gender + '|' + country 
-    response = cacheaware_gpt3complete('CreatePersonBackstory', prompt, username)
-    openai_response= response[0]
-    backstory = openai_response['choices'][0]['text']
-    values = [shortname,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
-    zipped = zip(peopledf_columns, values)
-    people_dict = dict(zipped)
-    peopledata.append(people_dict)
-    
+        if st.secrets['environment'] == 'cloud':
+            pass
+        else:
+            backupfilepath = datadir + '/' + 'backup.csv'
+            peopledf.to_csv(backupfilepath, mode='a', header=False, index=False, quoting=csv.QUOTE_ALL)
+            #st.write(peopledf)
 
-pd.set_option('display.max_colwidth', 70)  
-peopledf = peopledf.append(peopledata)
+        #if submitted:
+        st.info(infomessage)
+        show_created_people = peopledf.drop(axis=1, columns=['gender', 'invisible_comments'])
+        transposed_created_people = show_created_people.astype(str).transpose().head(15)
+        if not show_created_people.empty:
+                st.dataframe(show_created_people.head(5))
+                #st.dataframe(transposed_created_people, height=396) # 5.5 in x 72 dpi
+                st.markdown((transposed_created_people.to_html(index=True)), unsafe_allow_html=True)
+        else:
+            st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
-if st.secrets['environment'] == 'cloud':
-    pass
-else:
-    backupfilepath = datadir + '/' + 'backup.csv'
-    peopledf.to_csv(backupfilepath, mode='a', header=False)
-
-if submitted:
-    st.info(infomessage)
-    show_created_people = peopledf.drop(axis=1, columns=['gender', 'invisible_comments'])
-    st.dataframe(show_created_people.head(5))
+# New section
 
 st.subheader("Browse People")
 people = browse_people(datadir + '/' + 'people.csv')
