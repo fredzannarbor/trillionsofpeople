@@ -137,8 +137,6 @@ def show_current_version():
 
   __version_info__ = subprocess.check_output(["git", "describe", "--long"]).decode("utf-8").strip() + " | " + subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip() + ' | last updated: ' + last_modified_date.strftime("%Y-%m-%d %H:%M:%S") + ' | ' + last_commit_message
 
-  version2 = 
-
 
   __version__=__version_info__  
 
