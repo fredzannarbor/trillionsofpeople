@@ -22,6 +22,7 @@ import pandas as pd
 import datetime
 from datetime import date
 from gpt3_reduced_fx import gpt3complete, presets_parser, post_process_text, construct_preset_dict_for_UI_object
+from utilities import show_current_version
 from nltk.corpus import wordnet as wn
 import random
 
@@ -207,7 +208,7 @@ countries_list = countries_df.index.tolist()
 countries = countries_df.to_dict()
 
 
-peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
+peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'country', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
 
 st.title('TrillionsOfPeople.info')
 st.markdown("""_One row for every person who ever lived, might have lived, or may live someday._
@@ -239,6 +240,10 @@ st.sidebar.markdown("""## Partners
 This project needs beta users, demographers, futurists, historians, anthropologists, coders, GIS specialists, designers, data providers, sponsors, and investors! Please contact me at [fredz@trillionsofpeople.info](mailto:fredz@trillionsofpeople.info). 
 
 --Fred Zimmerman, Founder""")
+st.sidebar.subheader("Version Information")
+
+version_trillions = show_current_version()
+st.sidebar.markdown(version_trillions)
 
 st.subheader('Explore Scenarios')
 
@@ -298,17 +303,25 @@ with st.form("my_form"):
         target_year = year
 
     latitude,longitude, nearest_city = 0, 0, "Unknown"
-    indexcountry = random.randrange(0, len(countries_list))
-    st.write(indexcountry)
-    country = st.selectbox('Accept random, or pick one', options=countries.keys(), help ='Unknown locations are retrieved occasionally during peak hours.', index=indexcountry)
-    st.write('You selected:', country)
+    #indexcountry = random.randrange(0, len(countries_list))
+    #st.write(indexcountry)
+    country = st.selectbox('Pick the territory of a modern country.', options=countries.keys(), help ='Unknown locations are retrieved occasionally during peak hours.')
+    
+    if country == 'Random':
+        country = random.choice(countries_list)
+        infomessage = 'Randomly chosen: ' + country + '.'
+
+    else:
+        infomessage = 'Country is ' + country + '.'
+
 
     j = int(st.number_input('How many people do you want to generate? [For batch jobs, contact Fred Zimmerman.]', value=1, min_value=1, max_value=5, step=1, help='Processing time is linear with the number of people generated.'))
    
     # Every form must have a submit button.
     submitted = st.form_submit_button("Submit")
     if submitted:
-        st.write('submitting', country)
+        st.info(infomessage)
+#st.write('submitting', country)
 
         peopledf = pd.DataFrame(columns=peopledf_columns)
         peopledata =[]
@@ -338,7 +351,7 @@ with st.form("my_form"):
             openai_response= response[0]
             backstory = openai_response['choices'][0]['text']
             #st.write(backstory)
-            values = [shortname,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source]#, OCEAN_tuple]
+            values = [shortname,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, country, backstory, thisperson4name, source]#, OCEAN_tuple]
             #st.write(values)
             zipped = zip(peopledf_columns, values)
             people_dict = dict(zipped)
@@ -357,13 +370,13 @@ with st.form("my_form"):
             #st.write(peopledf)
 
         #if submitted:
-        st.info(infomessage)
+
         show_created_people = peopledf.drop(axis=1, columns=['gender', 'invisible_comments'])
         transposed_created_people = show_created_people.astype(str).transpose().head(15)
         if not show_created_people.empty:
                 st.dataframe(show_created_people.head(5))
                 #st.dataframe(transposed_created_people, height=396) # 5.5 in x 72 dpi
-                st.markdown((transposed_created_people.to_html(index=True)), unsafe_allow_html=True)
+                st.markdown(transposed_created_people.to_html(index=True), unsafe_allow_html=True)
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
