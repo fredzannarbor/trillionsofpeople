@@ -1,3 +1,5 @@
+Brown, Tom B., Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, et al. “Language Models Are Few-Shot Learners.” ArXiv:2005.14165 [Cs], July 22, 2020. http://arxiv.org/abs/2005.14165.
+
 Graeber, David, and David Wengrow. The Dawn of Everything: A New History of Humanity. Penguin UK, 2021.
 
 Lebret, Rémi, David Grangier, and Michael Auli. “Generating Text from Structured Data with Application to the Biography Domain.” CoRR abs/1603.07771 (2016). http://arxiv.org/abs/1603.07771.
