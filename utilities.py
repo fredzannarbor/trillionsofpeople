@@ -3,10 +3,7 @@ from os import pardir
 import pandas as pd
 import streamlit as st
 import os
-import spacy
-from spacy.language import Language
-from spacy_langdetect import LanguageDetector
-#from app.utilities.gensim_summarizer import gensim_summarizer
+
 import nltk
 from spellchecker import SpellChecker
 import re
