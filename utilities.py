@@ -10,7 +10,7 @@ import re
 import csv
 # import inspect
 # from inspect import currentframe
-# from datetime import datetime
+from datetime import datetime
 import subprocess
 # inspection utility
 
@@ -133,6 +133,8 @@ def show_current_version():
   last_commit_message = str(subprocess.check_output(['git', 'log', '-1', '--pretty=%B']).decode('utf-8').strip())
 
   __version_info__ = subprocess.check_output(["git", "describe", "--long"]).decode("utf-8").strip() + " | " + subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip() + ' | last updated: ' + last_modified_date.strftime("%Y-%m-%d %H:%M:%S") + ' | ' + last_commit_message
+
+  version_info_list = [ ]
 
 
   __version__=__version_info__  
