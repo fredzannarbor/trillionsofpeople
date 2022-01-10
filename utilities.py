@@ -5,12 +5,12 @@ import streamlit as st
 import os
 
 import nltk
-from spellchecker import SpellChecker
+
 import re
 import csv
-import inspect
-from inspect import currentframe
-from datetime import datetime
+# import inspect
+# from inspect import currentframe
+# from datetime import datetime
 import subprocess
 # inspection utility
 
