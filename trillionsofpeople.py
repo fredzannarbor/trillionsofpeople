@@ -243,7 +243,7 @@ This project needs beta users, demographers, futurists, historians, anthropologi
 st.sidebar.markdown(""" **Version Information** """)
 
 version_trillions = show_current_version()
-st.sidebar.write(version_trillions)
+st.sidebar.write(version_trillions, collapsed=True)
 
 st.subheader('Explore Scenarios')
 

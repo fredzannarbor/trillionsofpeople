@@ -373,6 +373,267 @@
       "url": "https://doi.org/10.1007/s10584-011-0148-z",
       "version": 0,
       "volume": "109"
+    },
+    {
+      "abstractNote": "Recent work has demonstrated substantial gains on many NLP tasks and benchmarks by pre-training on a large corpus of text followed by fine-tuning on a specific task. While typically task-agnostic in architecture, this method still requires task-specific fine-tuning datasets of thousands or tens of thousands of examples. By contrast, humans can generally perform a new language task from only a few examples or from simple instructions - something which current NLP systems still largely struggle to do. Here we show that scaling up language models greatly improves task-agnostic, few-shot performance, sometimes even reaching competitiveness with prior state-of-the-art fine-tuning approaches. Specifically, we train GPT-3, an autoregressive language model with 175 billion parameters, 10x more than any previous non-sparse language model, and test its performance in the few-shot setting. For all tasks, GPT-3 is applied without any gradient updates or fine-tuning, with tasks and few-shot demonstrations specified purely via text interaction with the model. GPT-3 achieves strong performance on many NLP datasets, including translation, question-answering, and cloze tasks, as well as several tasks that require on-the-fly reasoning or domain adaptation, such as unscrambling words, using a novel word in a sentence, or performing 3-digit arithmetic. At the same time, we also identify some datasets where GPT-3's few-shot learning still struggles, as well as some datasets where GPT-3 faces methodological issues related to training on large web corpora. Finally, we find that GPT-3 can generate samples of news articles which human evaluators have difficulty distinguishing from articles written by humans. We discuss broader societal impacts of this finding and of GPT-3 in general.",
+      "accessDate": "2022-01-09T00:14:02Z",
+      "attachments": [
+        {
+          "dateAdded": "2022-01-09T00:14:11Z",
+          "dateModified": "2022-01-09T00:14:11Z",
+          "itemType": "attachment",
+          "path": "/Users/fred/Zotero/storage/YZLVCZLL/Brown et al. - 2020 - Language Models are Few-Shot Learners.pdf",
+          "relations": [],
+          "tags": [],
+          "title": "arXiv Fulltext PDF",
+          "uri": "http://zotero.org/users/local/gbt17upb/items/YZLVCZLL"
+        },
+        {
+          "dateAdded": "2022-01-09T00:14:19Z",
+          "dateModified": "2022-01-09T00:14:19Z",
+          "itemType": "attachment",
+          "path": "/Users/fred/Zotero/storage/MK2WJT3Y/2005.html",
+          "relations": [],
+          "tags": [],
+          "title": "arXiv.org Snapshot",
+          "uri": "http://zotero.org/users/local/gbt17upb/items/MK2WJT3Y"
+        }
+      ],
+      "citationKey": "brownLanguageModelsAre2020",
+      "citekey": "brownLanguageModelsAre2020",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Tom B.",
+          "lastName": "Brown"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Benjamin",
+          "lastName": "Mann"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Nick",
+          "lastName": "Ryder"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Melanie",
+          "lastName": "Subbiah"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jared",
+          "lastName": "Kaplan"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Prafulla",
+          "lastName": "Dhariwal"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Arvind",
+          "lastName": "Neelakantan"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Pranav",
+          "lastName": "Shyam"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Girish",
+          "lastName": "Sastry"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Amanda",
+          "lastName": "Askell"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Sandhini",
+          "lastName": "Agarwal"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Ariel",
+          "lastName": "Herbert-Voss"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Gretchen",
+          "lastName": "Krueger"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Tom",
+          "lastName": "Henighan"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Rewon",
+          "lastName": "Child"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Aditya",
+          "lastName": "Ramesh"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Daniel M.",
+          "lastName": "Ziegler"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jeffrey",
+          "lastName": "Wu"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Clemens",
+          "lastName": "Winter"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Christopher",
+          "lastName": "Hesse"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Mark",
+          "lastName": "Chen"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Eric",
+          "lastName": "Sigler"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Mateusz",
+          "lastName": "Litwin"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Scott",
+          "lastName": "Gray"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Benjamin",
+          "lastName": "Chess"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jack",
+          "lastName": "Clark"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Christopher",
+          "lastName": "Berner"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Sam",
+          "lastName": "McCandlish"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Alec",
+          "lastName": "Radford"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Ilya",
+          "lastName": "Sutskever"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Dario",
+          "lastName": "Amodei"
+        }
+      ],
+      "date": "2020-07-22",
+      "dateAdded": "2022-01-09T00:14:02Z",
+      "dateModified": "2022-01-09T00:14:05Z",
+      "extra": "arXiv: 2005.14165",
+      "itemID": 6435,
+      "itemKey": "RVHQTRDI",
+      "itemType": "journalArticle",
+      "key": "RVHQTRDI",
+      "libraryCatalog": "arXiv.org",
+      "libraryID": 1,
+      "notes": [
+        {
+          "dateAdded": "2022-01-09T00:14:02Z",
+          "dateModified": "2022-01-09T00:14:02Z",
+          "itemType": "note",
+          "key": "AYVLV5BJ",
+          "note": "Comment: 40+32 pages",
+          "parentItem": "RVHQTRDI",
+          "relations": {},
+          "tags": [],
+          "uri": "http://zotero.org/users/local/gbt17upb/items/AYVLV5BJ",
+          "version": 0
+        }
+      ],
+      "publicationTitle": "arXiv:2005.14165 [cs]",
+      "relations": [],
+      "select": "zotero://select/library/items/RVHQTRDI",
+      "tags": [
+        {
+          "tag": "⛔ No DOI found",
+          "type": 1
+        },
+        {
+          "tag": "Computer Science - Computation and Language",
+          "type": 1
+        }
+      ],
+      "title": "Language Models are Few-Shot Learners",
+      "uri": "http://zotero.org/users/local/gbt17upb/items/RVHQTRDI",
+      "url": "http://arxiv.org/abs/2005.14165",
+      "version": 0
+    },
+    {
+      "abstractNote": "70k real faces (from Flickr) and 70k fake faces (GAN-generated)",
+      "accessDate": "2022-01-10T02:26:56Z",
+      "attachments": [
+        {
+          "dateAdded": "2022-01-10T02:27:04Z",
+          "dateModified": "2022-01-10T02:27:04Z",
+          "itemType": "attachment",
+          "path": "/Users/fred/Zotero/storage/5NJMG9X3/metadata.html",
+          "relations": [],
+          "tags": [],
+          "title": "Snapshot",
+          "uri": "http://zotero.org/users/local/gbt17upb/items/5NJMG9X3"
+        }
+      ],
+      "citationKey": "140kRealFake",
+      "citekey": "140kRealFake",
+      "creators": [],
+      "dateAdded": "2022-01-10T02:26:56Z",
+      "dateModified": "2022-01-10T02:26:56Z",
+      "itemID": 6439,
+      "itemKey": "DEMQL9XK",
+      "itemType": "webpage",
+      "key": "DEMQL9XK",
+      "language": "en",
+      "libraryID": 1,
+      "notes": [],
+      "relations": [],
+      "select": "zotero://select/library/items/DEMQL9XK",
+      "tags": [],
+      "title": "140k Real and Fake Faces",
+      "uri": "http://zotero.org/users/local/gbt17upb/items/DEMQL9XK",
+      "url": "https://kaggle.com/xhlulu/140k-real-and-fake-faces",
+      "version": 0
     }
   ],
   "version": {
