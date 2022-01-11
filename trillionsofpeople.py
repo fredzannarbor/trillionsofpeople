@@ -1,18 +1,22 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import glob
 import os
 import csv
 
+from yaml import unsafe_load
+import fakeface
+
 if st.secrets['environment'] == 'cloud':
     print('running on Streamlit Cloud with secrets file, gpt3 reduced fx, and no quota tracking')
-    datadir = 'people_data/'
+    datadir = 'people_data'
 elif st.secrets['environment'] == 'local':
     print("running on Fred's mac with reduced gpt3 fx, secrets file and no quota tracking")
 
-    datadir = 'people_data/'
+    datadir = 'people_data'
 elif st.secrets['environment'] == 'self-hosted':
     print('running  self-hosted on AWS instance with reduced gpt3 fx, secrets file, and no quota tracking')
-    datadir = 'people_data/'
+    datadir = 'people_data'
 
 import gibberish
 from numpy import extract, subtract
@@ -163,13 +167,33 @@ def migration_to(latitude, longitude, nearest_city):
     current_location = latitude + to_latitude_offset, longitude + to_longitude_offset, nearest_city + to_nearest_city_offset
     return current_location
 
+def select_fake_face_file():
+    fakefiledir = datadir + '/' + 'fake'
+    fakefilepath = fakefiledir + '/' + '*.jpg'
+    fake_face_files = glob.glob(fakefilepath)
+    #st.write(fake_face_files)
+    image_filename = random.choice(fake_face_files)
+    return image_filename
+
+def fetch_fake_face_api(gender, min_age=10, max_age=70):
+    baseuri = "https://fakeface.rest/thumb/view?"
+    gender=gender
+    face_thumb_uri = baseuri + gender 
+
+    return face_thumb_uri
+
+#def create_single_person(preset, target_year, country):
+
 def create_scenario_personas(scenario, n, target_year, country):
 
     
     #scenario_personas_df = pd.DataFrame(columns=peopledf_columns)
     scenario_personas_data =[]
-
+    card_columns = ['Attributes']
+    card_df = pd.DataFrame(columns=card_columns)
+    card_df['Attributes'] = peopledf_columns
     scenario_personas = {}
+    
     for person in range(n):
         values = []
 
@@ -183,32 +207,37 @@ def create_scenario_personas(scenario, n, target_year, country):
         realness = 'synthetic' # ['synthetic', 'authenticated', 'fictional']
         #OCEAN_tuple =  'test' # OCEANtuple()
         backstory = ""
-        cues = "job, etc."
-        prompt = 'Biographical details: ' + gender + '|' + country + '|' + cues
+        #cues = "job, etc."
+        prompt = 'Biographical details: ' + gender + '|' + country 
         backstory  = gpt3complete(scenario_selected, prompt,'trillions')[0]['choices'][0]['text']
+        image_uri = "<img src=" + '"' + fetch_fake_face_api(gender) + '"' + ' height=90' + ">"
+
         source = scenario
-        values = shortname, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, backstory, thisperson4name, source#, OCEAN_tuple]
+        comments = ""
+        status =  'Register | Authenticate | Claim | Mint'
+        values = [  shortname, image_uri,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, country, backstory, thisperson4name, source, comments, status]#, OCEAN_tuple]
         zipped = zip(peopledf_columns, values)
         scenario_personas_dict = dict(zipped)
         scenario_personas_data.append(scenario_personas_dict)
- 
+        card_df["Values"] = values
         pd.set_option('display.max_colwidth', 70)  
 
-    print(scenario_personas_data)
-    scenario_personas_df = pd.DataFrame(scenario_personas_data, columns = peopledf_columns)
-    
-    return scenario_personas_df
 
-# load files at startup
+    scenario_personas_df = pd.DataFrame(scenario_personas_data, columns = peopledf_columns)
+
+    return scenario_personas_df, card_df
+
+# load files & initialize variables at startup
 
 filename = datadir + '/' + 'country.csv'
 
 countries_df = pd.read_csv(datadir + '/' + 'country.csv', names =['country_name', 'code'],  index_col=0, squeeze=True)
 countries_list = countries_df.index.tolist()
 countries = countries_df.to_dict()
+comments = 'This is a comment'
+status = 'Register | Authenticate | Claim | Mint'
 
-
-peopledf_columns = ['name', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'country', 'backstory', 'fourwordsname', 'source','invisible_comments' ]#  'OCEANtuple'])
+peopledf_columns = ['name', 'image', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'country', 'backstory', 'fourwordsname', 'source','comments', 'status' ]#  'OCEANtuple'])
 
 st.title('TrillionsOfPeople.info')
 st.markdown("""_One row for every person who ever lived, might have lived, or may live someday._
@@ -245,6 +274,24 @@ st.sidebar.markdown(""" **Version Information** """)
 version_trillions = show_current_version()
 st.sidebar.write(version_trillions, collapsed=True)
 
+twoblock =  st.sidebar.columns([1,1])
+
+with st.sidebar:
+    
+    twoblock[0].write("Spread the word!")
+    with twoblock[1]:
+        components.html("""
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" 
+    data-text="Share TrillionsOfPeople.info:8502🎈" 
+    data-url="https://trillionsofpeople.info:8502"
+    data-show-count="false">
+    data-size="Large" 
+    data-hashtags="streamlit,python"
+    Tweet
+    </a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    """)
+
 st.subheader('Explore Scenarios')
 
 st.markdown(""" You can choose from a variety of scenarios to explore. The first set of [scenarios](https://www.dni.gov/index.php/gt2040-home/scenarios-for-2040) is drawn from the Office of the Director of National Intelligence's _Global Trends 2040_ (ODNI 2021), a planning and visioning exercise that the US Intelligence conducts every five years. The next set will be drawn from the IPCC's Representative Concentration Scenarios, which chart possible GHG futures for the year 2100.  In future, you will be able to submit scenarios to the project yourself.""")
@@ -267,21 +314,19 @@ with st.form("Scenario Explorer"):
         infomessage = f"Creating {n} personas for {scenario_name}."
         st.info(infomessage)
         if scenario_selected:
-            scenario_personas_df = create_scenario_personas(scenario_selected, 1, 2040, random_country)
-        if not scenario_personas_df.empty:
-            show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
-            transposed = show_personas.astype(str).transpose().head(15)
-            #st.dataframe(transposed)
-        if not show_personas.empty:
-            st.dataframe(show_personas.head(5))
-            st.dataframe(transposed, height=396) # 5.5 in x 72 dpi
+            #scenario_personas_df = create_scenario_personas(scenario_selected, 1, 2040, random_country)[0]
+            card_df = create_scenario_personas(scenario_selected, 1, 2040, random_country)[1]
+        if not card_df.empty:
+            #show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
+            st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
+
+
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
     else:
         pass
 
-   
 
 st.subheader("Create People From Any Era")
 
@@ -325,10 +370,14 @@ with st.form("my_form"):
 
         peopledf = pd.DataFrame(columns=peopledf_columns)
         peopledata =[]
+        card_columns = ['Attributes']
+        card_df = pd.DataFrame(columns=card_columns)
+        card_df['Attributes'] = peopledf_columns
 
     # with form info in hand, create personas
 
         for i in range(j):
+
             species =  'sapiens'
             gender = random.choice(['male', 'female'])
             shortname = create_shortname(species)
@@ -350,9 +399,11 @@ with st.form("my_form"):
             response = gpt3complete('CreatePersonBackstory', prompt, username)
             openai_response= response[0]
             backstory = openai_response['choices'][0]['text']
+            image_filename = "<img src=" + '"' + fetch_fake_face_api(gender) + '"' + ' height=90' + ">"
             #st.write(backstory)
-            values = [shortname,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, country, backstory, thisperson4name, source]#, OCEAN_tuple]
-            #st.write(values)
+            
+            values = [shortname, image_filename, year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, country, backstory, thisperson4name, source, comments, status]#,
+            card_df[shortname] = values
             zipped = zip(peopledf_columns, values)
             people_dict = dict(zipped)
             peopledata.append(people_dict)
@@ -367,16 +418,20 @@ with st.form("my_form"):
         else:
             backupfilepath = datadir + '/' + 'backup.csv'
             peopledf.to_csv(backupfilepath, mode='a', header=False, index=False, quoting=csv.QUOTE_ALL)
-            #st.write(peopledf)
 
-        #if submitted:
+        show_created_people = peopledf.drop(axis=1, columns=['gender', 'comments'])
 
-        show_created_people = peopledf.drop(axis=1, columns=['gender', 'invisible_comments'])
-        transposed_created_people = show_created_people.astype(str).transpose().head(15)
+        transposed_created_people = show_created_people.transpose().head(15)
+        
+        #st.dataframe(card_df)
+        #st.write(card_df, escape=False, unsafe_allow_html=True)
+
         if not show_created_people.empty:
-                st.dataframe(show_created_people.head(5))
-                #st.dataframe(transposed_created_people, height=396) # 5.5 in x 72 dpi
-                st.markdown(transposed_created_people.to_html(index=True), unsafe_allow_html=True)
+                st.write(show_created_people.to_html(escape=False), unsafe_allow_html=True)
+                st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
+                #st.write(transposed_created_people.to_html(index=True), escape=False, unsafe_allow_html=True)
+
+
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
