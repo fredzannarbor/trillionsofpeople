@@ -21,3 +21,4 @@ flask
 datasets
 spacy
 fitz
+pymupdf
