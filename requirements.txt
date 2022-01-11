@@ -20,5 +20,4 @@ email_validator
 flask
 datasets
 spacy
-fitz
 pymupdf
