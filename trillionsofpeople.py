@@ -395,7 +395,7 @@ with st.form("my_form"):
             source = 'TOP.info'
             username = 'trillions'
             latitude, longitude, nearest_city = random_spot(country)
-            prompt = "Biographic details: " + gender + '|' + country 
+            prompt = prompt + '\n\n'
             response = gpt3complete('CreatePersonBackstory', prompt, username)
             openai_response= response[0]
             backstory = openai_response['choices'][0]['text']
@@ -419,17 +419,12 @@ with st.form("my_form"):
             backupfilepath = datadir + '/' + 'backup.csv'
             peopledf.to_csv(backupfilepath, mode='a', header=False, index=False, quoting=csv.QUOTE_ALL)
 
-        show_created_people = peopledf.drop(axis=1, columns=['gender', 'comments'])
+        #show_created_people = peopledf.drop(axis=1, columns=['gender', 'comments'])
 
-        transposed_created_people = show_created_people.transpose().head(15)
-        
-        #st.dataframe(card_df)
-        #st.write(card_df, escape=False, unsafe_allow_html=True)
+        if not card_df.empty:
 
-        if not show_created_people.empty:
-                st.write(show_created_people.to_html(escape=False), unsafe_allow_html=True)
                 st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
-                #st.write(transposed_created_people.to_html(index=True), escape=False, unsafe_allow_html=True)
+
 
 
         else:
@@ -438,6 +433,7 @@ with st.form("my_form"):
 # New section
 
 st.subheader("Browse People")
+st.write('This section contains historical, fictional, and synthetic personas.')
 people = browse_people(datadir + '/' + 'people.csv')
 peopledf = pd.DataFrame(people)
 browsepeopledf = pd.DataFrame(people)
