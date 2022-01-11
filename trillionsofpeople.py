@@ -179,7 +179,9 @@ def select_fake_face_file():
 def fetch_fake_face_api(gender, min_age=10, max_age=70):
     baseuri = "https://fakeface.rest/thumb/view?"
     gender=gender
-    face_thumb_uri = baseuri + gender 
+    noise = str(random.randint(1,99))
+    face_thumb_uri = baseuri + noise + '/' + gender 
+
 
     return face_thumb_uri
 
@@ -209,13 +211,13 @@ def create_scenario_personas(scenario, n, target_year, country):
         #OCEAN_tuple =  'test' # OCEANtuple()
         backstory = ""
         #cues = "job, etc."
-        prompt = 'Biographical details: ' + gender + '|' + country 
+        prompt = 'Biographical details: ' + gender + ':' + country 
         backstory  = gpt3complete(scenario_selected, prompt,'trillions')[0]['choices'][0]['text']
         image_uri = "<img src=" + '"' + fetch_fake_face_api(gender) + '"' + ' height=90' + ">"
 
         source = scenario
         comments = ""
-        status =  'Register | Authenticate | Claim | Mint'
+        status =  'Register | Edit | Claim '
         values = [  shortname, image_uri,year_of_birth_in_CE, gender, species, timeline, realness, latitude, longitude, nearest_city, country, backstory, thisperson4name, source, comments, status]#, OCEAN_tuple]
         zipped = zip(peopledf_columns, values)
         scenario_personas_dict = dict(zipped)
@@ -236,14 +238,14 @@ countries_df = pd.read_csv(datadir + '/' + 'country.csv', names =['country_name'
 countries_list = countries_df.index.tolist()
 countries = countries_df.to_dict()
 comments = 'This is a comment'
-status = 'Register | Authenticate | Claim | Mint'
+status = 'Register : Edit | Claim'
 
 peopledf_columns = ['name', 'image', 'born', 'gender','species', 'timeline', 'realness', 'latitude', 'longitude', 'nearest_city', 'country', 'backstory', 'fourwordsname', 'source','comments', 'status' ]#  'OCEANtuple'])
 
 st.title('TrillionsOfPeople.info')
 st.markdown("""_One row for every person who ever lived, might have lived, or may live someday._
 
-_Submit, authenticate, enhance, and share stories about your fellow souls._
+_**Create, edit, register, claim, share **stories about your fellow souls._
 
 _A tool to explore the human story._
 
@@ -253,7 +255,8 @@ Sadly, the details of most of those lives are lost in the shadows of past and fu
 
 This focus on a small percentage of all lives has important practical implications. Our understanding of lives in the past is mostly limited to those few persons for whom we have written records or concrete artifacts; most are mysteries--names, skeletons, or less. Similarly, one of the major difficulties in implementing far-sighted energy and climate policies is that future people are abstractions. 
 
-_Trillions_ is a tool to make both past and futures feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques. You can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and in a way that connects with your own personal story.
+_Trillions_ is a tool to make both past and futures feel more real, using state-of-the-art scientific, historical, and artificial intelligence techniques.You, as an individual, can explore the lives of real-seeming people--past, present, or future--in small numbers or large--and connect them with your personal story.  You, as an organizational leader, can quickly create and iterate through and personas that will give new energy and focus to your organization's forward-looking vision.
+
 """)
 st.sidebar.markdown(""" ## Navigation
 
@@ -262,6 +265,7 @@ st.sidebar.markdown(""" ## Navigation
 - [Browse People](#browse-people)
 - [Submit Data](#submit-data)
 - [Methods](#methods)
+- [Data Dictionary](#data-dictionary)
 - [References](#references)""")
 
 
@@ -452,23 +456,25 @@ st.subheader("Methods")
 
 st.markdown(""" The guiding principle of "one row per person" implies that the number of columns must be kept manageably low. There may be a time where a great profusion of data tables and models is needed to capture vast amounts of data about each individual and their relations to one another and to the physical and social worlds, but the initial goal is to be as parsimonious  as possible. """)
 
-st.markdown(""" #### Data Dictionary
+st.subheader("Data Dictionary")
 
-    | Column Name | Description |
-    |-------------|-------------|
-| shortname | shortnames are culture-agnostic
-year_of_birth_in_CE | year of birth in the Common Era, negative values are BCE, positive values are CE
-gender | both reproductive and social aspects are covered
-species
-timeline
-realness
-latitude
-longitude
-nearest_city
-backstory
-thisperson4name
-source
-""")
+data_dictionary = { "shortname" : "Short names are programmatically created and intended to be as culture- and gender-agnostic as possible.",
+"image":"Currently provided via FakeFace API; it's understood that the images are not necessarily very consistent with the other biographical information for the persona. Future versions of this service will include a more robust image generation service.",
+"year_of_birth_in_CE" : "Year of birth in the Common Era, negative values are BCE, positive values are CE.", 
+"gender" : "Gender is assigned programmatically as socially constructed during the individual's lifetime and consistent with self-chosen preferences. Child-bearing capacity, important for demographic models, will be addressed separately in future development.",
+"species": "At least four hominin species inhabited Earth during our time window of 190,000 BCE to 10,000 CE: 'sapiens', 'neanderthalensis', 'denisovan', 'floresiensis'.  It is possible that there will be new species or species-like entities in the future, such as AIs or cyborgs.",
+"timeline" : "The database allows for representing persons possibly found in alternate timelines.",
+"realness": "Types of realness include 'synthetic', 'historic', 'documented' and 'fictional.'",
+"latitude" : "Self-explanatory.",
+"longitude": "Self-explanatory.",
+"nearest_city" : "Nearest present-day city.",
+"backstory" : "Created by a language model in response to a prompt written by Fred Zimmerman.",
+"thisperson4name" : "Four words that provide a unique identifier for well in excess of a trillion persons.",
+"comments" : "Free text; may be from any source including _Trillions_, data provider, or users.",
+"source" : "The organization that provided the definition for the persona.", 
+"status" : "Registration allows users to add newly created persons to the permanent database.   Editing enables users to recommend or request changes to personas. And claiming allows users to 'own' a historic, synthetic or (public domain) fictional persona connected to non-fungible tokens (NFTs), i.e. collectible cards authenticated via the blockchain." }
+
+st.write(data_dictionary)
 st.subheader("References")
 
 # open file with references
