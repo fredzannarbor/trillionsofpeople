@@ -3,6 +3,7 @@ import streamlit.components.v1 as components
 import glob
 import os
 import csv
+import fitz
 
 from yaml import unsafe_load
 import fakeface
@@ -319,8 +320,8 @@ with st.form("Scenario Explorer"):
         if not card_df.empty:
             #show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
             st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
-
-
+            
+           
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
@@ -423,9 +424,13 @@ with st.form("my_form"):
 
         if not card_df.empty:
 
-                st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
+            st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
 
-
+            card_df.to_html('out.html')
+            html = fitz.open('out.html')
+            pdfbytes = html.convert_to_pdf()
+            pdf = fitz.open("pdf", pdfbytes)
+            pdf.save("some.pdf")
 
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
