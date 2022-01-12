@@ -4,6 +4,7 @@ import glob
 import os
 import csv
 import fitz
+from card2jpg import html2jpg
 
 from yaml import unsafe_load
 import fakeface
@@ -323,8 +324,9 @@ with st.form("Scenario Explorer"):
             card_df = create_scenario_personas(scenario_selected, 1, 2040, random_country)[1]
         if not card_df.empty:
             #show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
+            html = card_df.to_html(escape=False).replace("\\n","<p>")
             st.write(card_df.to_html(escape=False).replace("\\n","<p>"), unsafe_allow_html=True)
-            
+            html2jpg(html, "card.jpg")
 
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
