@@ -323,9 +323,9 @@ with st.form("Scenario Explorer"):
             card_df = create_scenario_personas(scenario_selected, 1, 2040, random_country)[1]
         if not card_df.empty:
             #show_personas = scenario_personas_df.drop(axis=1, columns=['gender', 'invisible_comments'])
-            st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
+            st.write(card_df.to_html(escape=False).replace("\\n","<p>"), unsafe_allow_html=True)
             
-           
+
         else:
             st.error("Backend problem creating personas, contact Fred Zimmerman for help.")
 
@@ -428,7 +428,7 @@ with st.form("my_form"):
 
         if not card_df.empty:
 
-            st.write(card_df.to_html(escape=False), unsafe_allow_html=True)
+            st.write(card_df.to_html(escape=False).replace("\\n","<p>"), unsafe_allow_html=True)
 
             card_df.to_html('out.html')
             html = fitz.open('out.html')
