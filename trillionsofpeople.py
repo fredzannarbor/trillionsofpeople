@@ -339,7 +339,7 @@ st.subheader("Create People From Any Era")
 
 with st.form("my_form"):
 
-    year = st.number_input('Specify birth year as a positive value in the Common Era or a negative value in the period Before Common Era.', min_value=-150000, max_value=10000, value=2100, step=100, help='The year 700 BCE is -700, the year 2100 CE is 2100.')
+    year = st.number_input('Specify birth year as a positive value in the Common Era or a negative value in the period Before Common Era.', min_value=-233000, max_value=100000, value=2100, step=100, help='The year 700 BCE is -700, the year 2100 CE is 2100.')
 
     infomessage = ''
 
@@ -464,7 +464,7 @@ data_dictionary = { "shortname" : "Short names are programmatically created and 
 "image":"Currently provided via FakeFace API; it's understood that the images are not necessarily very consistent with the other biographical information for the persona. Future versions of this service will include a more robust image generation service.",
 "year_of_birth_in_CE" : "Year of birth in the Common Era, negative values are BCE, positive values are CE.", 
 "gender" : "Gender is assigned programmatically as socially constructed during the individual's lifetime and consistent with self-chosen preferences. Child-bearing capacity, important for demographic models, will be addressed separately in future development.",
-"species": "At least four hominin species inhabited Earth during our time window of 190,000 BCE to 10,000 CE: 'sapiens', 'neanderthalensis', 'denisovan', 'floresiensis'.  It is possible that there will be new species or species-like entities in the future, such as AIs or cyborgs.",
+"species": "At least four hominin species inhabited Earth during our time window of 233,000 BCE to 10,000 CE: 'sapiens', 'neanderthalensis', 'denisovan', 'floresiensis' (Vidal 2022).  It is possible that there will be new species or species-like entities in the future, such as AIs or cyborgs.",
 "timeline" : "The database allows for representing persons possibly found in alternate timelines.",
 "realness": "Types of realness include 'synthetic', 'historic', 'documented' and 'fictional.'",
 "latitude" : "Self-explanatory.",
