@@ -20,6 +20,8 @@
         "completion_heading": "", 
         "preset_placeholder": "Enter brief description of your project here.",
         "user" : "37",
-        "organization" : ""
+        "organization" : "",
+        "preset_db" : "",
+        "preset_additional_notes" : ""
     }
 ]
