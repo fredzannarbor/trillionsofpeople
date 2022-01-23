@@ -431,7 +431,8 @@ with st.form("my_form"):
         if not card_df.empty:
 
             st.write(card_df.to_html(escape=False).replace("\\n","<p>"), unsafe_allow_html=True)
-
+            card_df.style.set_properties(**{'background-color': 'black', 'color': 'lawngreen', 'border-color': 'white'})
+            # st.write(card_df.style.set_properties(**{'background-color': 'black', 'color': 'lawngreen', 'border-color': 'white'}).render(), unsafe_allow_html=True)
             card_df.to_html('out.html')
             html = fitz.open('out.html')
             pdfbytes = html.convert_to_pdf()
