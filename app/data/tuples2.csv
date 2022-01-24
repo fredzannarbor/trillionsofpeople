@@ -1,0 +1,6 @@
+project,preset,completion_type,prompt,parameters,function4each,functionatend
+PantheonWave1,NFTBioCreator,gpt3complete,Napoleon Bonaparte,None,None,None
+PantheonWave1,NFTWhyPersonIsGreat,gpt3complete,Napoleon Bonaparte,None,None,None
+PantheonWave1,NFTWhyPersonWasHorrible,gpt3complete,Napoleon Bonaparte,None,None,None
+PantheonWave1,NFTModernPersonWhoIsSimilar,gpt3complete,Napoleon Bonaparte,None,None,None
+PantheonWave1,NFTELI5,gpt3complete,Napoleon Bonaparte,None,None,None

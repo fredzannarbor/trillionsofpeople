@@ -13,6 +13,7 @@ from uuid import uuid4
 import os
 from os import environ as osenv
 import stripe
+import csv
 #import createsyntheticdata as csd
 
 stripe_keys = {
@@ -30,12 +31,14 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 openai_user_id_for_safety_tracking = os.environ['OPENAI_USER_ID_FOR_SAFETY_TRACKING']
 
 
-tuple1 = ['SimpleXmasStoryIdeas', 'csd', ['n=3'],'intelligent tanks', None, NoneBytes]
-tuple2 = ['SimpleXmasStoryIdeas', 'csd', ['n=4'],'Napoleon Bonaparte', None, None]
-tuple3 = ['SimpleXmasStoryIdeas', 'csd', ['n=5'],'from the perspective of the infant Jesus', None, None]
-tuple_list = ['tuplelist1',tuple1, tuple2, tuple3]
-tuple4 = ['CreatePersonBackstory', 'gpt3complete', 'n=3','\n$NAME will be born in the area currently known as Russia in the year 3000 CE.\n', None, None]
-tuple_list = ['NFTmaker', tuple4 ]
+# tuple1 = ['SimpleXmasStoryIdeas', 'csd', ['n=3'],'intelligent tanks', None, NoneBytes]
+# tuple2 = ['SimpleXmasStoryIdeas', 'csd', ['n=4'],'Napoleon Bonaparte', None, None]
+# tuple3 = ['SimpleXmasStoryIdeas', 'csd', ['n=5'],'from the perspective of the infant Jesus', None, None]
+# tuple_list = ['tuplelist1',tuple1, tuple2, tuple3]
+# tuple4 = ['CreatePersonBackstory', 'gpt3complete', 'n=3','\n$NAME will be born in the area currently known as Russia in the year 3000 CE.\n', None, None]
+# tuple5 = ['NFTBioCreator', 'gpt3complete', 'Napoleon Bonaparte', None, None, None]
+# tuple6 = ['NFTWhyPersonIsGreat', 'gpt3complete', 'Napoleon Bonaparte', None, None, None]
+# tuple_list = ['NFTmaker', tuple5, tuple6 ]
 class Longform:
     def __init__(self, list_of_preset_tuples, output_dir):
         self.list_of_preset_tuples = list_of_preset_tuples
@@ -51,30 +54,60 @@ class Longform:
 # set
         return
 
-    def create_longform(list_of_preset_tuples, output_dir):
-        datadir = output_dir + '/' + list_of_preset_tuples[0] + '_' + str(uuid4())[0:4]
-        print('datadir is: ' + datadir)
-        for preset, completion_type, parameters, prompt, function4each, functionatend in list_of_preset_tuples[1:]:
-            print(preset, completion_type, parameters, prompt, function4each, functionatend)
-            for parameter in parameters:
-                #print(parameter)
-                if parameter.startswith("n="):
-                    n = parameter.split("=")[1]
-                    #print('n is', n)
+    def open_tuple_csv(filename):
+        with open(filename, newline='') as f:
+            reader = csv.reader(f)
+            next(reader)
+            tuple_list = [tuple(row) for row in reader]
+            print(tuple_list)
+        return tuple_list
+
+    def create_longform(tuplenow, output_dir):
+        results = []
+        for project, preset, completion_type, prompt, parameters, function4each, functionatend in tuplenow:
+            datadir = output_dir + '/' + project + '_' + str(uuid4())[0:4]
+            print('datadir is: ' + datadir)
+            print('***')
+            print(preset, completion_type, prompt, parameters, function4each, functionatend)
+            print('***')
+            if parameters:
+                for parameter in parameters:
+                        #print(parameter)
+                        if parameter.startswith("n="):
+                            n = parameter.split("=")[1]
+            else:
+                print('no parameters set')
+
             if completion_type == 'gpt3complete':
-                print('ppp:', preset,  prompt, parameters)
-                response = gpt3complete(preset, parameters, prompt)
+
+                response = gpt3complete(preset, prompt, parameters)
                 openai_response = response[0]
+                print('preset is: ' + preset)
                 text = openai_response['choices'][0]['text']
                 print('text is', text)
+                presetappend = preset +  '\n'
+                results.append(presetappend)
+                textappend = text + '\n'
+                results.append(textappend)
+
             elif completion_type == 'csd':
                # print('got to csd', 'preset is', preset, 'parameters are', parameters, 'prompt is', prompt, 'datadir is', datadir)
                 response = csd.main(article_writer_preset=preset,number=n, generate_articles=True, article_titles_only=True, article_title_prompt=prompt, datadir=datadir)
+                text = openai_response['choices'][0]['text']
+                results.append(preset)
+                results.append(text)
             elif completion_type == 'gpt3complete':
                 gpt3complete.create_longform(preset, parameters, prompt, datadir)
             else:
                 print('completion_type not recognized')
                 return
-        return
-
-    create_longform(tuple_list, 'app/data/longform_test')
+        return results
+    
+    tuplenow = open_tuple_csv('app/data/tuples2.csv')
+    #print('tuplenow', tuplenow)
+    cumulative = create_longform(tuplenow, 'app/data/longform_test')
+    #convert cumulatie to string
+    print(cumulative)
+    with open('app/data/longform_test/results.txt', 'w') as f:
+        f.write('\n'.join(cumulative))
+    #print(cumulative)

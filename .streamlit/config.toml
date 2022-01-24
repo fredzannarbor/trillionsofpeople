@@ -3,4 +3,3 @@ dataFrameSerialization = "legacy"
 
 [server]
 port = 8502
-enableCORS = false

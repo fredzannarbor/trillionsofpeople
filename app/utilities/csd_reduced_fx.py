@@ -255,18 +255,24 @@ def create_article_titles(datadir, vertical,  n, article_title_preset, article_t
     max_tokens = 100
     if article_title_prompt:
         override_prompt = article_title_prompt
-    preset_name, preset_description, preset_instructions, preset_additional_notes, preset_placeholder, pre_user_input, post_user_input, prompt, vertical, engine, finetune_model, temperature, max_tokens, top_p, fp, pp, stop_sequence, echo_on, preset_pagetype, preset_db, user, organization = presets_parser(article_title_preset)
-    vertical = vertical_chooser(vertical)
+
+    presetsdf, preset_name, preset_description, preset_instructions, preset_additional_notes, preset_placeholder, pre_user_input, post_user_input, prompt, engine, finetune_model, temperature, max_tokens, top_p, fp, pp, stop_sequence, echo_on, preset_pagetype, preset_db, user, organization = presets_parser(article_title_preset)
+
+    #print('preset_name', preset_name, 'preset_description', preset_description, 'preset_instructions', preset_instructions, 'preset_placeholder', preset_placeholder, 'pre_user_input', pre_user_input, 'post_user_input', post_user_input, 'prompt', prompt, 'engine', engine, 'finetune_model', finetune_model, 'temperature', temperature, 'max_tokens', max_tokens, 'top_p', top_p, 'fp', fp, 'pp', pp, 'stop_sequence', stop_sequence, 'echo_on', echo_on, 'preset_db', preset_db, 'user', user, 'organization', organization)
+
+    #vertical = vertical_chooser(vertical)
     
     if vertical:
-        vertical_prompt = " The company is in the " + vertical + " industry."
+        vertical_prompt = vertical
     else:
         vertical_prompt = ""
     if override_prompt:
-        prompt = override_prompt
-    prompt = pre_user_input + prompt + post_user_input + vertical_prompt
-    
-   #print('kb title prompt is', prompt)
+        prompt = prompt + '\n' + override_prompt
+    #print('pre_user_input', pre_user_input, '\nprompt', prompt, '\npost_user_input', post_user_input, '\nvertical_prompt', vertical_prompt)
+    prompt = vertical_prompt + pre_user_input + prompt + post_user_input 
+    print('*****')
+    print('kb title prompt is:\n', prompt)
+    print('*****')
     n = int(n)
     while lines < n:
     
@@ -352,7 +358,7 @@ def batch_run(datadir, batchfile):
        #print(vertical)
         pass
     return
-def main(article_length=300, article_length_random=False, article_number=3, article_title_prompt='intelligent tanks', article_title_input_file="", article_title_preset='SimpleXmasStoryIdeas', article_titles_only=True, article_writer_preset='kbTopicA', article_writer_prompt='imaginative', batchfile=False, classifier_prompt_preset='recordclassifierA', datadir='/tmp/longform', finetune_model='ada', generate_articles=True, generate_records=False, insert_before_post_user_input="", number=5, record_prompt_list=['crmA', 'crmE'], record_topic_preset='GenericGenerateTicketTopics', record_topics_only=False, record_writer_preset='GenericRecordWriter', remove_html=True, user_type="system user", vertical="Longform"):
+def main(article_length=300, article_length_random=False, article_number=3, article_title_prompt='intelligent tanks', article_title_input_file="", article_title_preset='SimpleXmasStoryIdeas', article_titles_only=True, article_writer_preset='kbTopicA', article_writer_prompt='imaginative', batchfile=False, classifier_prompt_preset='recordclassifierA', datadir='/tmp/longform', finetune_model='ada', generate_articles=True, generate_records=False, insert_before_post_user_input="", number=5, record_prompt_list=['crmA', 'crmE'], record_topic_preset='GenericGenerateTicketTopics', record_topics_only=False, record_writer_preset='GenericRecordWriter', remove_html=True, user_type="system user", vertical=""):
    
     if not os.path.exists(datadir):
         os.makedirs(datadir)
@@ -366,7 +372,7 @@ def main(article_length=300, article_length_random=False, article_number=3, arti
         pass
     report = ""
     if not generate_records:
-       print("not generating records")
+       pass#print("not generating records")
     else:
        #print('generating records')
         if user_type == "random":
@@ -381,7 +387,7 @@ def main(article_length=300, article_length_random=False, article_number=3, arti
         pool = recordtopics[2]
         report = report + recordtopics[3]
         if record_topics_only:
-           print ('only generated record topics, did not create records')
+           pass#print ('only generated record topics, did not create records')
         else:
             records=[]
            #print("now entering main loop to create records")
@@ -419,8 +425,8 @@ def main(article_length=300, article_length_random=False, article_number=3, arti
         ##print('kbpool is', kbpool)
        #print('article titles only =', article_titles_only)
         if article_titles_only:
-           print('titles only', kbpool)
-            
+           #print('titles only', kbpool)
+            pass
         else:
            #print('writing articles')
         
