@@ -4,7 +4,15 @@ import time
 
 start = time.time()
 count = 0
-filename = 'app/data/enwiki-latest.json.gz'
+
+list_to_check = []
+with open('app/data/pantheon_all_names.txt', 'r') as f:
+    for line in f:
+        list_to_check.append(line.strip())
+    set_to_check = set(list_to_check)
+
+foundcount = 0  # count of names found in the list
+filename = '/Users/fred/unity/trillions-deploy/app/data/enwiki-latest.json.gz'
 with utils.open(filename, 'rb') as f:
     for line in f:
         # decode each JSON line into a Python dictionary object
@@ -14,14 +22,21 @@ with utils.open(filename, 'rb') as f:
             print(count)
             print(time.time() - start)
         # each article has a "title", a mapping of interlinks and a list of "section_titles" and
-        if article['title'].startswith("A"):
-            #print(article['title'])
-            #print(article['text'])
-            #print("\n")
-            pass
-        else:
-            pass
-            #print("not printing articles beginning with B-Z")
+        if article['title'] in set_to_check:
+            articlefilename = article['title'].replace(" ", "_") + '.json'
+            with open(articlefilename, 'w') as f:
+                    json.dump(article, f)
+            foundcount = foundcount + 1
+            if (foundcount % 100) == 0:
+                print(foundcount)
+                print(time.time() - start)
+                # save article to file
+
+
+            open ('app/data/pantheon_all_names_found.txt', 'a').write(article['title'] + '\n')
+            if foundcount > 10:
+                break
+
         #print("Article title: %s" % article['title'])
         # #print("Interlinks: %s" + article['interlinks'])
         # for section_title, section_text in zip(article['section_titles'], article['section_texts']):
