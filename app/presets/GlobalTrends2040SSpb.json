@@ -5,7 +5,19 @@
         "preset_active": "True",
         "preset_instructions": "",
         "preset_description": "This preset ",
-        "pre_user_input": "Create a profile with backstory for a person living in 2040. Use the scenario, role, and biographical details provided below.\n\nScenario: In 2040, the world is fragmented into several economic and security blocs of varying size and strength, centered on the United States, China, the European Union, Russia, and a few regional powers, and focused on self-sufficiency, resiliency, and defense. Information flows within separate cyber-sovereign enclaves, supply chains are reoriented, and international trade is disrupted. Vulnerable developing countries are caught in the middle with some on the verge of becoming failed states. Global problems, notably climate change, are spottily addressed, if at all.\n\nRole: ",
+        "pre_user_input": "Create a profile with backstory for a person living in 2040. Use the scenario, role, and biographical details provided below.\n\nScenario: First, global leadership shifts from being
+        led by the U.S. and like-minded nation-states to
+        relative parity with China and its allies. Second, the
+        global technological change rate will increase from
+        “Accelerated” to “Exponential,” especially as key
+        enabling space technologies in data analytics and
+        artificial intelligence, propulsion, manufacturing,
+        resource extraction, and more importantly the
+        convergence of all of these factors, will be used to
+        augment human endeavors. Finally, Geopolitical
+        Stability starts to potentially shift from “Predictable
+        Competition” to “Unrestrained Competition,”
+        which reflects the increasingly competitive nature of .\n\nRole: ",
         "prompt": "",
         "post_user_input": "Include some personal details. Profile with backstory:\n\n",
         "engine":"curie-instruct-beta-v2",
