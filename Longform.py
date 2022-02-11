@@ -14,6 +14,7 @@ import os
 from os import environ as osenv
 import stripe
 import csv
+import json
 #import createsyntheticdata as csd
 
 stripe_keys = {
@@ -64,8 +65,10 @@ class Longform:
 
     def create_longform(tuplenow, output_dir):
         results = []
+        results_dict = {}
         for project, preset, completion_type, prompt, parameters, function4each, functionatend in tuplenow:
             datadir = output_dir + '/' + project + '_' + str(uuid4())[0:4]
+            os.mkdir(datadir)
             print('datadir is: ' + datadir)
             print('***')
             print(preset, completion_type, prompt, parameters, function4each, functionatend)
@@ -82,13 +85,15 @@ class Longform:
 
                 response = gpt3complete(preset, prompt, parameters)
                 openai_response = response[0]
-                print('preset is: ' + preset)
+                #print('preset is: ' + preset)
                 text = openai_response['choices'][0]['text']
-                print('text is', text)
+                #print('text is', text)
                 presetappend = preset +  '\n'
+                
                 results.append(presetappend)
                 textappend = text + '\n'
                 results.append(textappend)
+                results_dict.update({preset: text})
 
             elif completion_type == 'csd':
                # print('got to csd', 'preset is', preset, 'parameters are', parameters, 'prompt is', prompt, 'datadir is', datadir)
@@ -96,18 +101,23 @@ class Longform:
                 text = openai_response['choices'][0]['text']
                 results.append(preset)
                 results.append(text)
+                results_dict.update({preset: textappend})
             elif completion_type == 'gpt3complete':
                 gpt3complete.create_longform(preset, parameters, prompt, datadir)
             else:
                 print('completion_type not recognized')
                 return
-        return results
+            # save as json
+            with open(datadir + '/results.json', 'w') as f:
+                json.dump(results_dict, f)
+
+        return results, results_dict
     
     tuplenow = open_tuple_csv('app/data/tuples2.csv')
-    #print('tuplenow', tuplenow)
+    print('tuplenow', tuplenow)
     cumulative = create_longform(tuplenow, 'app/data/longform_test')
     #convert cumulatie to string
     print(cumulative)
     with open('app/data/longform_test/results.txt', 'w') as f:
-        f.write('\n'.join(cumulative))
-    #print(cumulative)
+        f.write('\n'.join(cumulative[0]))
+    print(cumulative)
