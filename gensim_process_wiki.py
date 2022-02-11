@@ -21,7 +21,7 @@ with utils.open(filename, 'rb') as f:
         if (count % 100000) == 0:
             print(count)
             print(time.time() - start)
-        # each article has a "title", a mapping of interlinks and a list of "section_titles" and
+        # each article has a "title", a mapping of interlinks and a list of "section_titles" 
         if article['title'] in set_to_check:
             articlefilename = article['title'].replace(" ", "_") + '.json'
             with open(articlefilename, 'w') as f:
